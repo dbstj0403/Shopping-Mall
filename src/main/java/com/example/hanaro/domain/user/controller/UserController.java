@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-@Tag(name = "User API", description = "회원 관련 API입니다.")
+@Tag(name = "USER API", description = "회원 관련 API입니다.")
 @RestController
 @RequestMapping("/api/user")
 @RequiredArgsConstructor
@@ -28,6 +28,7 @@ public class UserController {
             @ApiResponse(responseCode = "400", description = "입력값 오류 혹은 유효성 검사 실패"),
             @ApiResponse(responseCode = "500", description = "서버 내부 오류")
     })
+
     @PostMapping("/join")
     public ResponseEntity<?> join(@Valid @RequestBody UserJoinRequest request) {
         Long userId = userService.join(request);

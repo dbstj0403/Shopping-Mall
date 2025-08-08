@@ -1,7 +1,4 @@
-spring:
-  profiles:
-    active: local
-
 jwt:
   secret: "XB5!z@6f3rLm2#Qp4^aV7cY8o*N0g$eD1h&UjW9tZ5sR3kM2yL"
   expire-seconds: 3600
+

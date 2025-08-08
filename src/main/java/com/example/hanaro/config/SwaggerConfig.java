@@ -3,6 +3,10 @@ package com.example.hanaro.config;
 import io.swagger.v3.oas.annotations.OpenAPIDefinition;
 import io.swagger.v3.oas.annotations.info.Info;
 import io.swagger.v3.oas.annotations.servers.Server;
+import io.swagger.v3.oas.models.Components;
+import io.swagger.v3.oas.models.OpenAPI;
+import io.swagger.v3.oas.models.security.SecurityRequirement;
+import io.swagger.v3.oas.models.security.SecurityScheme;
 import org.springdoc.core.models.GroupedOpenApi;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -14,9 +18,7 @@ import org.springframework.context.annotation.Configuration;
                 version = "v1",
                 description = "디지털 하나로 금융서비스개발 6기 쇼핑몰 과제 API 명세서입니다. 🚀"
         ),
-        servers = {
-                @Server(url = "http://localhost:8080", description = "로컬 개발 서버")
-        }
+        servers = { @Server(url = "http://localhost:8080", description = "로컬 개발 서버") }
 )
 public class SwaggerConfig {
 
@@ -24,9 +26,9 @@ public class SwaggerConfig {
     @Bean
     public GroupedOpenApi userApi() {
         return GroupedOpenApi.builder()
-                .group("USER API") // Swagger UI에서 보일 탭 이름
+                .group("USER API") // 정렬을 위해 접두 숫자 사용
                 .packagesToScan("com.example.hanaro.domain.user.controller")
-                .pathsToMatch("/api/user/**") // 경로 패턴
+                .pathsToMatch("/api/user/**")
                 .build();
     }
 

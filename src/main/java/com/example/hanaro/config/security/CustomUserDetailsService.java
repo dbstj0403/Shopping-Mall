@@ -2,7 +2,6 @@ package com.example.hanaro.config.security;
 
 import com.example.hanaro.domain.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
-//import lombok.var;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
