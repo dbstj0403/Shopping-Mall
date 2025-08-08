@@ -1,18 +1,20 @@
 package com.example.hanaro.global.config;
 
+import com.example.hanaro.global.swagger.examples.CommonExamples;
 import io.swagger.v3.oas.annotations.OpenAPIDefinition;
 import io.swagger.v3.oas.annotations.info.Info;
 import io.swagger.v3.oas.annotations.servers.Server;
 import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.OpenAPI;
+import io.swagger.v3.oas.models.examples.Example;
 import io.swagger.v3.oas.models.media.Content;
 import io.swagger.v3.oas.models.media.MediaType;
 import io.swagger.v3.oas.models.media.Schema;
-import io.swagger.v3.oas.models.responses.ApiResponse;
 import io.swagger.v3.oas.models.security.SecurityRequirement;
 import io.swagger.v3.oas.models.security.SecurityScheme;
+import io.swagger.v3.oas.models.responses.ApiResponse;
+
 import org.springdoc.core.customizers.GlobalOpenApiCustomizer;
-import org.springdoc.core.customizers.OpenApiCustomizer;
 import org.springdoc.core.models.GroupedOpenApi;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -32,55 +34,63 @@ public class SwaggerConfig {
 
     @Bean
     public OpenAPI baseOpenAPI() {
-        // ApiResponseDto는 제네릭이지만, 스키마 이름만 컴포넌트에 등록해 참조로 사용
-        Schema<?> apiResponseSchemaRef = new Schema<>().$ref("#/components/schemas/ApiResponseDto");
-        MediaType json = new MediaType().schema(apiResponseSchemaRef);
-        Content jsonContent = new Content().addMediaType("application/json", json);
-
-        ApiResponse badRequest = new ApiResponse().description("잘못된 요청").content(jsonContent);
-        ApiResponse unauthorized = new ApiResponse().description("인증 필요").content(jsonContent);
-        ApiResponse forbidden = new ApiResponse().description("접근 불가").content(jsonContent);
-        ApiResponse notFound = new ApiResponse().description("리소스 없음").content(jsonContent);
-        ApiResponse internal = new ApiResponse().description("서버 오류").content(jsonContent);
-
-        Components components = new Components()
-                .addSchemas("ApiResponseDto", apiResponseSchemaRef)
-                .addResponses("BadRequest", badRequest)
-                .addResponses("Unauthorized", unauthorized)
-                .addResponses("Forbidden", forbidden)
-                .addResponses("NotFound", notFound)
-                .addResponses("InternalServerError", internal)
-                // JWT Bearer 스키마 등록
-                .addSecuritySchemes("bearerAuth",
-                        new SecurityScheme()
-                                .type(SecurityScheme.Type.HTTP)
-                                .scheme("bearer")
-                                .bearerFormat("JWT")
-                );
-
         return new OpenAPI()
-                .components(components);
+                .components(new Components()
+                        .addSecuritySchemes("bearerAuth",
+                                new SecurityScheme()
+                                        .type(SecurityScheme.Type.HTTP)
+                                        .scheme("bearer")
+                                        .bearerFormat("JWT")));
     }
 
     @Bean
-    public OpenApiCustomizer addGlobalResponses() {
+    public GlobalOpenApiCustomizer globalResponseCustomizer() {
         return openApi -> {
             if (openApi.getPaths() == null) return;
-            openApi.getPaths().values().forEach(pathItem ->
-                    pathItem.readOperations().forEach(op -> {
-                        op.getResponses().addApiResponse("400",
-                                new io.swagger.v3.oas.models.responses.ApiResponse().$ref("#/components/responses/BadRequest"));
-                        op.getResponses().addApiResponse("401",
-                                new io.swagger.v3.oas.models.responses.ApiResponse().$ref("#/components/responses/Unauthorized"));
-                        op.getResponses().addApiResponse("403",
-                                new io.swagger.v3.oas.models.responses.ApiResponse().$ref("#/components/responses/Forbidden"));
-                        op.getResponses().addApiResponse("404",
-                                new io.swagger.v3.oas.models.responses.ApiResponse().$ref("#/components/responses/NotFound"));
-                        op.getResponses().addApiResponse("500",
-                                new io.swagger.v3.oas.models.responses.ApiResponse().$ref("#/components/responses/InternalServerError"));
+
+            boolean specHasGlobalSecurity =
+                    openApi.getSecurity() != null && !openApi.getSecurity().isEmpty();
+
+            openApi.getPaths().forEach((path, pathItem) ->
+                    pathItem.readOperations().forEach(operation -> {
+                        var responses = operation.getResponses();
+
+                        // 항상 추가 (예시 덮어쓰기)
+                        responses.addApiResponse("500",
+                                buildApiResponseWithExample("서버 오류", CommonExamples.SERVER_ERROR));
+
+                        // 보안 필요한 경우만 401/403
+                        boolean opHasSecurity = operation.getSecurity() != null && !operation.getSecurity().isEmpty();
+                        boolean isAdminPath = path.startsWith("/api/admin/");
+                        boolean isPublicPath = path.startsWith("/auth/") || path.startsWith("/public/");
+                        boolean secured = (opHasSecurity || specHasGlobalSecurity || isAdminPath) && !isPublicPath;
+
+                        if (secured) {
+                            responses.addApiResponse("401",
+                                    buildApiResponseWithExample("인증 필요 혹은 토큰 유효하지 않음", CommonExamples.UNAUTHORIZED));
+                            responses.addApiResponse("403",
+                                    buildApiResponseWithExample("권한 없음", CommonExamples.FORBIDDEN));
+                        }
                     })
             );
         };
+    }
+
+    private io.swagger.v3.oas.models.responses.ApiResponse buildApiResponseWithExample(
+            String description, String exampleJson
+    ) {
+        Schema<?> ref = new Schema<>().$ref("#/components/schemas/ApiResponseDto");
+
+        Example ex = new Example().value(exampleJson);
+        MediaType mt = new MediaType()
+                .schema(ref)
+                .addExamples("example", ex);
+
+        Content content = new Content().addMediaType("application/json", mt);
+
+        return new io.swagger.v3.oas.models.responses.ApiResponse()
+                .description(description)
+                .content(content);
     }
 
     @Bean
@@ -102,5 +112,16 @@ public class SwaggerConfig {
                         openApi.addSecurityItem(new SecurityRequirement().addList("bearerAuth"))
                 )
                 .build();
+    }
+
+    private ApiResponse buildApiResponse(String description) {
+        return new ApiResponse()
+                .description(description)
+                .content(new Content().addMediaType(
+                        "application/json",
+                        new MediaType().schema(
+                                new Schema<>().$ref("#/components/schemas/ApiResponseDto")
+                        )
+                ));
     }
 }

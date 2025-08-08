@@ -12,6 +12,6 @@ public final class UserExamples {
     """;
 
     public static final String JOIN_EMAIL_DUP = """
-        { "status": 409, "message": "이미 사용 중인 이메일입니다.", "data": null }
+        { "status": 409, "message": "이미 사용 중인 이메일입니다.", "data": {} }
     """;
 }

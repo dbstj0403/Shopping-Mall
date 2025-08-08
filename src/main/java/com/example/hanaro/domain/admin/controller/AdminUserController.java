@@ -50,15 +50,13 @@ public class AdminUserController {
         return ResponseEntity.ok(ApiResponseDto.ok(users));
     }
 
+    @Operation(summary = "회원 삭제", description = "회원 ID로 회원을 삭제합니다.")
+    @ApiResponse(responseCode = "204", description = "삭제 성공")
     @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     @DeleteMapping(value = "/{id}", produces = "application/json")
-    public ResponseEntity<ApiResponseDto<Map<String, String>>> deleteUser(@PathVariable Long id) {
+    public ResponseEntity<Void> deleteUser(@PathVariable Long id) {
         userService.deleteUserById(id);
-        return ResponseEntity.ok(
-                ApiResponseDto.ok(
-                        "해당 회원이 성공적으로 삭제되었습니다.",
-                        Map.of("message", "해당 회원이 성공적으로 삭제되었습니다.")
-                )
-        );
+        return ResponseEntity.noContent().build();
     }
 }
+
