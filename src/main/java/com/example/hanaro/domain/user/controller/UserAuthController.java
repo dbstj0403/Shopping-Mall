@@ -1,20 +1,16 @@
 package com.example.hanaro.domain.user.controller;
 
 import com.example.hanaro.config.jwt.JwtTokenProvider;
-import com.example.hanaro.domain.user.dto.LoginRequest;
-import com.example.hanaro.domain.user.dto.TokenResponse;
-import com.example.hanaro.domain.user.repository.UserRepository;
+import com.example.hanaro.domain.user.dto.LoginRequestDto;
+import com.example.hanaro.domain.user.dto.TokenResponseDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -38,13 +34,13 @@ public class UserAuthController {
             @ApiResponse(responseCode = "500", description = "서버 내부 오류")
     })
     @PostMapping("/login")
-    public ResponseEntity<?> login(@RequestBody LoginRequest req) {
+    public ResponseEntity<?> login(@RequestBody LoginRequestDto req) {
         try {
             var auth = authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(req.getEmail(), req.getPassword()));
             String role = auth.getAuthorities().iterator().next().getAuthority();
             String token = jwtTokenProvider.generate(auth.getName(), role);
-            return ResponseEntity.ok(new TokenResponse(token));
+            return ResponseEntity.ok(new TokenResponseDto(token));
         } catch (org.springframework.security.authentication.BadCredentialsException e) {
             return ResponseEntity.status(401).body(Map.of("message","이메일 또는 비밀번호가 올바르지 않습니다."));
         } catch (Exception e) {

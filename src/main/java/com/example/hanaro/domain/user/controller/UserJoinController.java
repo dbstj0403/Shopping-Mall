@@ -1,7 +1,7 @@
 package com.example.hanaro.domain.user.controller;
 
-import com.example.hanaro.domain.user.dto.JoinResponse;
-import com.example.hanaro.domain.user.dto.UserJoinRequest;
+import com.example.hanaro.domain.user.dto.JoinResponseDto;
+import com.example.hanaro.domain.user.dto.JoinRequestDto;
 import com.example.hanaro.domain.user.service.UserService;
 import com.example.hanaro.global.payload.response.ApiResponseDto;
 import com.example.hanaro.global.swagger.examples.UserExamples;
@@ -21,7 +21,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/api/user")
 @RequiredArgsConstructor
-public class UserController {
+public class UserJoinController {
 
     private final UserService userService;
 
@@ -42,10 +42,10 @@ public class UserController {
             consumes = "application/json",
             produces = "application/json"
     )
-    public ResponseEntity<ApiResponseDto<JoinResponse>> signup(@Valid @RequestBody UserJoinRequest request) {
+    public ResponseEntity<ApiResponseDto<JoinResponseDto>> signup(@Valid @RequestBody JoinRequestDto request) {
         Long userId = userService.join(request);
         return ResponseEntity.ok(
-                ApiResponseDto.ok("회원가입이 성공적으로 완료되었습니다! 🎉", new JoinResponse(userId))
+                ApiResponseDto.ok("회원가입이 성공적으로 완료되었습니다! 🎉", new JoinResponseDto(userId))
         );
     }
 }

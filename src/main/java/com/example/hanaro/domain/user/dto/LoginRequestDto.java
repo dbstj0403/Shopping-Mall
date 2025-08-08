@@ -8,16 +8,16 @@ import lombok.Getter;
 import lombok.Setter;
 
 @Getter @Setter
-public class LoginRequest {
+public class LoginRequestDto {
 
     @NotBlank(message = "이메일은 필수입니다.")
     @Email(message = "올바른 이메일 형식이 아닙니다.")
-    @Schema(description = "Email", example = "hanaro@email.com")
+    @Schema(description = "이메일", example = "hanaro@email.com")
     private String email;
 
     @NotBlank(message = "비밀번호는 필수입니다.")
     @Size(min = 8, max = 20, message = "비밀번호는 8자 이상 20자 이하여야 합니다.")
-    @Schema(description = "Password", example = "12345678")
+    @Schema(description = "비밀번호", example = "12345678")
     private String password;
 }
 

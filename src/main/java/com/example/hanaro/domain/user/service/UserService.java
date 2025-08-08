@@ -1,7 +1,7 @@
 package com.example.hanaro.domain.user.service;
 
 import com.example.hanaro.domain.admin.dto.UserResponse;
-import com.example.hanaro.domain.user.dto.UserJoinRequest;
+import com.example.hanaro.domain.user.dto.JoinRequestDto;
 import com.example.hanaro.domain.user.entity.User;
 import com.example.hanaro.domain.user.repository.UserRepository;
 import com.example.hanaro.global.error.BusinessException;
@@ -21,7 +21,7 @@ public class UserService {
     private final PasswordEncoder passwordEncoder;
 
     @Transactional
-    public Long join(UserJoinRequest request) {
+    public Long join(JoinRequestDto request) {
         if (userRepository.existsByEmail(request.getEmail())) {
             throw new BusinessException(ErrorCode.EMAIL_ALREADY_EXISTS); // 409
         }

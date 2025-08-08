@@ -7,7 +7,7 @@ import lombok.Data;
 @Data
 @AllArgsConstructor
 @Schema(description = "회원가입 응답 데이터")
-public class JoinResponse {
+public class JoinResponseDto {
     @Schema(description = "생성된 회원 ID", example = "1")
     private Long userId;
 }
