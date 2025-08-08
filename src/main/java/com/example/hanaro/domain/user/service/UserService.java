@@ -40,4 +40,11 @@ public class UserService {
                 .map(user -> new UserResponse(user.getId(), user.getName(), user.getEmail()))
                 .toList();
     }
+
+    public void deleteUserById(Long id) {
+        if(!userRepository.existsById(id)) {
+            throw new IllegalArgumentException("해당 ID의 회원이 존재하지 않습니다.");
+        }
+        userRepository.deleteById(id);
+    }
 }

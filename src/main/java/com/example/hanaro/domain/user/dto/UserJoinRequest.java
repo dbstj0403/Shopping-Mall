@@ -33,7 +33,7 @@ public class UserJoinRequest {
                 .email(email)
                 .password(encodedPassword)
                 .name(name)
-                .role(Role.USER)
+                .role(Role.ROLE_USER)
                 .build();
     }
 }
