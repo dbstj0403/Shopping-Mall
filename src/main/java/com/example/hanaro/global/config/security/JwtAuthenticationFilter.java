@@ -1,6 +1,6 @@
-package com.example.hanaro.config.security;
+package com.example.hanaro.global.config.security;
 
-import com.example.hanaro.config.jwt.JwtTokenProvider;
+import com.example.hanaro.global.config.jwt.JwtTokenProvider;
 import io.jsonwebtoken.Claims;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;

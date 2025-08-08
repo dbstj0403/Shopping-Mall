@@ -26,17 +26,17 @@ public class UserJoinController {
     private final UserService userService;
 
     @Operation(summary = "회원가입", description = "유효성 검사를 포함한 회원가입 API입니다.")
-    @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "회원가입 성공",
-                    content = @Content(schema = @Schema(implementation = ApiResponseDto.class),
-                            examples = @ExampleObject(value = UserExamples.JOIN_SUCCESS))),
-            @ApiResponse(responseCode = "400", description = "유효성 검증 실패",
-                    content = @Content(schema = @Schema(implementation = ApiResponseDto.class),
-                            examples = @ExampleObject(value = UserExamples.JOIN_VALIDATION_ERROR))),
-            @ApiResponse(responseCode = "409", description = "이메일 중복",
-                    content = @Content(schema = @Schema(implementation = ApiResponseDto.class),
-                            examples = @ExampleObject(value = UserExamples.JOIN_EMAIL_DUP)))
-    })
+//    @ApiResponses({
+//            @ApiResponse(responseCode = "200", description = "회원가입 성공",
+//                    content = @Content(schema = @Schema(implementation = ApiResponseDto.class),
+//                            examples = @ExampleObject(value = UserExamples.JOIN_SUCCESS))),
+//            @ApiResponse(responseCode = "400", description = "유효성 검증 실패",
+//                    content = @Content(schema = @Schema(implementation = ApiResponseDto.class),
+//                            examples = @ExampleObject(value = UserExamples.JOIN_VALIDATION_ERROR))),
+//            @ApiResponse(responseCode = "409", description = "이메일 중복",
+//                    content = @Content(schema = @Schema(implementation = ApiResponseDto.class),
+//                            examples = @ExampleObject(value = UserExamples.JOIN_EMAIL_DUP)))
+//    })
     @PostMapping(
             value = "/join",
             consumes = "application/json",

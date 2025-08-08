@@ -1,6 +1,6 @@
 package com.example.hanaro.domain.user.controller;
 
-import com.example.hanaro.config.jwt.JwtTokenProvider;
+import com.example.hanaro.global.config.jwt.JwtTokenProvider;
 import com.example.hanaro.domain.user.dto.LoginRequestDto;
 import com.example.hanaro.domain.user.dto.TokenResponseDto;
 import io.swagger.v3.oas.annotations.Operation;

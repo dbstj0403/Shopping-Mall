@@ -1,4 +1,4 @@
-package com.example.hanaro.config.security;
+package com.example.hanaro.global.config.security;
 
 import com.example.hanaro.domain.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;

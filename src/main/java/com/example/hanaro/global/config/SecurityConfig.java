@@ -1,6 +1,6 @@
-package com.example.hanaro.config;
+package com.example.hanaro.global.config;
 
-import com.example.hanaro.config.security.JwtAuthenticationFilter;
+import com.example.hanaro.global.config.security.JwtAuthenticationFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

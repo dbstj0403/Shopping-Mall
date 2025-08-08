@@ -1,4 +1,4 @@
-package com.example.hanaro.config.jwt;
+package com.example.hanaro.global.config.jwt;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
