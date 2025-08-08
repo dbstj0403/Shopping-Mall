@@ -2,7 +2,7 @@ package com.example.hanaro.global.error;
 
 import com.example.hanaro.global.payload.response.ApiResponseDto;
 import jakarta.validation.ConstraintViolation;
-import jakarta.validation.ConstraintViolationException; // ⬅️ 파라미터/경로 검증용 (jakarta)
+import jakarta.validation.ConstraintViolationException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.DuplicateKeyException;
