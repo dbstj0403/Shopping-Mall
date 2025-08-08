@@ -4,10 +4,12 @@ import com.example.hanaro.domain.admin.dto.UserResponse;
 import com.example.hanaro.domain.user.dto.UserJoinRequest;
 import com.example.hanaro.domain.user.entity.User;
 import com.example.hanaro.domain.user.repository.UserRepository;
-import jakarta.transaction.Transactional;
+import com.example.hanaro.global.error.BusinessException;
+import com.example.hanaro.global.error.ErrorCode;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -20,30 +22,25 @@ public class UserService {
 
     @Transactional
     public Long join(UserJoinRequest request) {
-        // 이메일 중복 체크
         if (userRepository.existsByEmail(request.getEmail())) {
-            throw new IllegalArgumentException("이미 사용 중인 이메일입니다.");
+            throw new BusinessException(ErrorCode.EMAIL_ALREADY_EXISTS); // 409
         }
-
-        // 비밀번호 암호화
         String encodedPassword = passwordEncoder.encode(request.getPassword());
-
-        // DTO → 엔티티로 변환 후 저장
         User user = request.toEntity(encodedPassword);
-        User savedUser = userRepository.save(user);
-
-        return savedUser.getId(); // 가입된 사용자 ID 반환
+        return userRepository.save(user).getId();
     }
 
+    @Transactional(readOnly = true)
     public List<UserResponse> getAllUsers() {
         return userRepository.findAll().stream()
-                .map(user -> new UserResponse(user.getId(), user.getName(), user.getEmail()))
+                .map(u -> new UserResponse(u.getId(), u.getName(), u.getEmail()))
                 .toList();
     }
 
+    @Transactional
     public void deleteUserById(Long id) {
-        if(!userRepository.existsById(id)) {
-            throw new IllegalArgumentException("해당 ID의 회원이 존재하지 않습니다.");
+        if (!userRepository.existsById(id)) {
+            throw new BusinessException(ErrorCode.USER_NOT_FOUND); // 404 도메인 코드 추천
         }
         userRepository.deleteById(id);
     }
