@@ -12,7 +12,7 @@ public class UserResponse {
     private Long id;
 
     @Schema(description = "Name", example = "별돌이")
-    private String username;
+    private String name;
 
     @Schema(description = "Email", example = "hanaro@email.com")
     private String email;

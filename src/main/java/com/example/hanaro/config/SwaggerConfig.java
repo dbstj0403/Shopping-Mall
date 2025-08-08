@@ -30,7 +30,6 @@ import org.springframework.context.annotation.Configuration;
 )
 public class SwaggerConfig {
 
-    // --- (1) 공통 응답 컴포넌트 & (옵션) JWT 보안 스키마 등록 ---
     @Bean
     public OpenAPI baseOpenAPI() {
         // ApiResponseDto는 제네릭이지만, 스키마 이름만 컴포넌트에 등록해 참조로 사용
@@ -45,31 +44,24 @@ public class SwaggerConfig {
         ApiResponse internal = new ApiResponse().description("서버 오류").content(jsonContent);
 
         Components components = new Components()
-                // 스키마는 클래스 스캔으로 자동 생성되므로 이름 참조만 맞추면 됩니다.
                 .addSchemas("ApiResponseDto", apiResponseSchemaRef)
                 .addResponses("BadRequest", badRequest)
                 .addResponses("Unauthorized", unauthorized)
                 .addResponses("Forbidden", forbidden)
                 .addResponses("NotFound", notFound)
-                .addResponses("InternalServerError", internal);
-                // ====== (옵션) JWT Bearer 보안 스키마 ======
-//                .addSecuritySchemes("bearerAuth",
-//                        new SecurityScheme()
-//                                .type(SecurityScheme.Type.HTTP)
-//                                .scheme("bearer")
-//                                .bearerFormat("JWT")
-//                );
-
-        // (옵션) 전역 보안 요구사항: 모든 API에 bearerAuth 적용
-        SecurityRequirement security = new SecurityRequirement().addList("bearerAuth");
+                .addResponses("InternalServerError", internal)
+                // JWT Bearer 스키마 등록
+                .addSecuritySchemes("bearerAuth",
+                        new SecurityScheme()
+                                .type(SecurityScheme.Type.HTTP)
+                                .scheme("bearer")
+                                .bearerFormat("JWT")
+                );
 
         return new OpenAPI()
                 .components(components);
-                // JWT를 안 쓴다면 아래 security는 제거해도 무방
-//                .addSecurityItem(security);
     }
 
-    // --- (2) 전 엔드포인트에 공통 응답 자동 주입 (springdoc 2.x: GlobalOpenApiCustomizer) ---
     @Bean
     public OpenApiCustomizer addGlobalResponses() {
         return openApi -> {
@@ -91,7 +83,6 @@ public class SwaggerConfig {
         };
     }
 
-    // --- (3) 사용자 API 그룹 ---
     @Bean
     public GroupedOpenApi userApi() {
         return GroupedOpenApi.builder()
@@ -101,13 +92,15 @@ public class SwaggerConfig {
                 .build();
     }
 
-    // --- (4) 관리자 API 그룹 ---
     @Bean
     public GroupedOpenApi adminApi() {
         return GroupedOpenApi.builder()
                 .group("ADMIN API")
                 .packagesToScan("com.example.hanaro.domain.admin.controller")
                 .pathsToMatch("/api/admin/**")
+                .addOpenApiCustomizer(openApi ->
+                        openApi.addSecurityItem(new SecurityRequirement().addList("bearerAuth"))
+                )
                 .build();
     }
 }
