@@ -1,5 +1,6 @@
 package com.example.hanaro.domain.user.service;
 
+import com.example.hanaro.domain.admin.dto.UserResponse;
 import com.example.hanaro.domain.user.dto.UserJoinRequest;
 import com.example.hanaro.domain.user.entity.User;
 import com.example.hanaro.domain.user.repository.UserRepository;
@@ -7,6 +8,8 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -30,5 +33,11 @@ public class UserService {
         User savedUser = userRepository.save(user);
 
         return savedUser.getId(); // 가입된 사용자 ID 반환
+    }
+
+    public List<UserResponse> getAllUsers() {
+        return userRepository.findAll().stream()
+                .map(user -> new UserResponse(user.getId(), user.getName(), user.getEmail()))
+                .toList();
     }
 }
