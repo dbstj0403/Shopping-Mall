@@ -55,7 +55,6 @@ public class SwaggerConfig {
                     pathItem.readOperations().forEach(operation -> {
                         var responses = operation.getResponses();
 
-                        // 항상 추가 (예시 덮어쓰기)
                         responses.addApiResponse("500",
                                 buildApiResponseWithExample("서버 오류", CommonExamples.SERVER_ERROR));
 
