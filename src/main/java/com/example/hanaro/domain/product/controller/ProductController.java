@@ -17,6 +17,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.Positive;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -134,5 +135,47 @@ public class ProductController {
                     .status(ErrorCode.INTERNAL_ERROR.getStatus())
                     .body(ApiResponseDto.fail(ErrorCode.INTERNAL_ERROR, "예상치 못한 오류가 발생했습니다."));
         }
+    }
+
+    @Operation(
+            summary = "상품 목록 조회",
+            description = "전체 상품 목록을 조회합니다."
+    )
+    @PreAuthorize("hasRole('ADMIN')")
+    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<ApiResponseDto<List<ProductResponseDto>>> getAllProducts() {
+        List<ProductResponseDto> products = productRepository.findAll().stream()
+                .map(p -> ProductResponseDto.builder()
+                        .id(p.getId())
+                        .name(p.getName())
+                        .price(p.getPrice())
+                        .description(p.getDescription())
+                        .imageUrls(p.getImageUrls())
+                        .build()
+                )
+                .toList();
+
+        return ResponseEntity.ok(ApiResponseDto.ok("상품 목록 조회 성공", products));
+    }
+
+    @Operation(
+            summary = "상품 삭제",
+            description = "상품 ID로 단일 상품을 삭제합니다."
+    )
+    @DeleteMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<ApiResponseDto<Void>> deleteProduct(
+            @PathVariable("id") @Positive(message = "유효한 상품 ID여야 합니다.") Long id
+    ) {
+        return productRepository.findById(id)
+                .map(product -> {
+                    // fileStorageService.deleteImages(product.getImageUrls()); // 필요 시
+                    productRepository.delete(product);
+                    return ResponseEntity.ok(ApiResponseDto.ok("상품이 삭제되었습니다.", (Void) null));
+                })
+                .orElseGet(() ->
+                        ResponseEntity
+                                .status(ErrorCode.NOT_FOUND.getStatus())
+                                .body(ApiResponseDto.fail(ErrorCode.NOT_FOUND, "상품을 찾을 수 없습니다."))
+                );
     }
 }
