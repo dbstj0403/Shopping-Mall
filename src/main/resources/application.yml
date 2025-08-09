@@ -1,6 +1,15 @@
+file:
+  base-origin: ${FILE_BASE_ORIGIN:src/main/resources/static/origin}
+  base-upload: ${FILE_BASE_UPLOAD:src/main/resources/static/upload}
+
 spring:
   profiles:
     active: local
+
+  servlet:
+    multipart:
+      max-file-size: 512KB  # 단일 파일 512KB
+      max-request-size: 3MB # 전체 요청 3MB
 
   datasource:
     url: jdbc:mysql://localhost:3306/hanarodb
@@ -30,3 +39,4 @@ management:
   endpoint:
     health:
       probes.enabled: true
+
