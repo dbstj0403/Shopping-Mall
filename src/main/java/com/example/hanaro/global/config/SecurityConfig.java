@@ -49,9 +49,9 @@ public class SecurityConfig {
                                 "/static/**",
                                 "/api/user/join", "/api/user/login",
                                 "/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html",
-                                "/actuator/**"
+                                "/actuator/**", "/actuator/health"
                         ).permitAll()
-                        .requestMatchers(HttpMethod.GET, "/api/user/products", "/api/user/products/**").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api/user/products", "/api/user/products/**", "/health").permitAll()
                         .requestMatchers("/api/admin/**").hasAuthority("ROLE_ADMIN")
                         .anyRequest().authenticated()
                 )

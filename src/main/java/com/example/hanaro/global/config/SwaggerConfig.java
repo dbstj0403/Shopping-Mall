@@ -58,4 +58,12 @@ public class SwaggerConfig {
                 )
                 .build();
     }
+
+    @Bean
+    public GroupedOpenApi systemApi() {
+        return GroupedOpenApi.builder()
+                .group("SYSTEM")
+                .pathsToMatch("/health")
+                .build();
+    }
 }
