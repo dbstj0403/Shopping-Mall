@@ -25,4 +25,15 @@ public class ProductResponseDto {
 
     @Schema(description = "현재 재고", example = "25")
     private Integer stock;
+
+    public static ProductResponseDto fromEntity(com.example.hanaro.domain.product.entity.Product p) {
+        return ProductResponseDto.builder()
+                .id(p.getId())
+                .name(p.getName())
+                .price(p.getPrice())
+                .description(p.getDescription())
+                .imageUrls(p.getImageUrls())
+                .stock(p.getStock())
+                .build();
+    }
 }

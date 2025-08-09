@@ -36,7 +36,7 @@ import java.util.Objects;
 @RequiredArgsConstructor
 @SecurityRequirement(name = "bearerAuth") // Swagger 자물쇠 표시
 @Tag(name = "PRODUCT API", description = "어드민 전용 상품 관리 API입니다.")
-public class ProductController {
+public class AdminProductController {
 
     private final ProductRepository productRepository;
     private final FileStorageService fileStorageService;
