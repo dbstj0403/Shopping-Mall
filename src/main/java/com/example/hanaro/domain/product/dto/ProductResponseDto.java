@@ -14,7 +14,15 @@ public class ProductResponseDto {
 
     @Schema(description = "상품 이름", example = "아이패드")
     private String name;
+
+    @Schema(description = "상품 가격", example = "1000")
     private Integer price;
+
+    @Schema(description = "상품 설명", example = "대학생 필수품")
     private String description;
+
     private List<String> imageUrls;
+
+    @Schema(description = "현재 재고", example = "25")
+    private Integer stock;
 }
