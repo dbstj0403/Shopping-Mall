@@ -20,10 +20,9 @@ public class Product {
     private Integer price;
     private String description;
 
-    @ElementCollection
     @CollectionTable(name = "product_images", joinColumns = @JoinColumn(name = "product_id"))
     @Column(name = "image_url")
-    private List<String> imageUrls;
+    private String imageUrl;
 
     @NotNull(message = "재고는 필수입니다.")
     @PositiveOrZero(message = "재고는 0 이상이어야 합니다.")
