@@ -5,12 +5,11 @@ import com.example.hanaro.domain.order.dto.OrderListItemDto;
 import com.example.hanaro.domain.order.service.OrderService;
 import com.example.hanaro.global.payload.response.ApiResponseDto;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -28,4 +27,21 @@ public class AdminOrderController {
     public ApiResponseDto<List<OrderListItemDto>> getAll() {
         return ApiResponseDto.ok(adminOrderService.getAll());
     }
+
+    // 단건: 주문 ID로 조회
+    @GetMapping("/{orderId}")
+    @PreAuthorize("hasRole('ADMIN')")
+    @Operation(summary = "주문 단건 조회", description = "주문 ID로 단건을 조회합니다.")
+    public ApiResponseDto<OrderListItemDto> getById(@PathVariable Long orderId) {
+        return ApiResponseDto.ok(adminOrderService.getById(orderId));
+    }
+
+    // 검색: 상품명 포함으로 목록 조회
+    @GetMapping("/search")
+    @PreAuthorize("hasRole('ADMIN')")
+    @Operation(summary = "상품명으로 주문 검색", description = "상품명을 포함하는 주문들을 반환합니다. 기본정렬 createdAt DESC")
+    public ApiResponseDto<List<OrderListItemDto>> searchByProductName(@RequestParam String productName) {
+        return ApiResponseDto.ok(adminOrderService.searchByProductName(productName));
+    }
+
 }

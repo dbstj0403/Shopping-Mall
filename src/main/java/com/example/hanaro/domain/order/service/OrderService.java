@@ -108,4 +108,15 @@ public class OrderService {
         List<Order> orders = orderRepository.findAllByOrderByCreatedAtDesc();
         return orders.stream().map(OrderListItemDto::from).toList();
     }
+
+    public OrderListItemDto getById(Long orderId) {
+        return orderRepository.findById(orderId)
+                .map(OrderListItemDto::from)
+                .orElseThrow(() -> new IllegalArgumentException("주문을 찾을 수 없습니다: " + orderId));
+    }
+
+    public List<OrderListItemDto> searchByProductName(String name) {
+        var orders = orderRepository.findAllWithItemsByProductName(name.trim());
+        return orders.stream().map(OrderListItemDto::from).toList();
+    }
 }
