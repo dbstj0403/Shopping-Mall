@@ -3,6 +3,7 @@ package com.example.hanaro.domain.user.controller;
 import com.example.hanaro.global.config.jwt.JwtTokenProvider;
 import com.example.hanaro.domain.user.dto.LoginRequestDto;
 import com.example.hanaro.domain.user.dto.TokenResponseDto;
+import com.example.hanaro.global.config.security.CustomUserDetails;
 import com.example.hanaro.global.error.ErrorCode;
 import com.example.hanaro.global.payload.response.ApiResponseDto;
 import io.swagger.v3.oas.annotations.Operation;
@@ -28,9 +29,10 @@ public class UserAuthController {
         try {
             var auth = authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(req.getEmail(), req.getPassword()));
-
+            var principal = (CustomUserDetails) auth.getPrincipal();
+            Long userId = principal.getId();
             String role = auth.getAuthorities().iterator().next().getAuthority();
-            String token = jwtTokenProvider.generate(auth.getName(), role);
+            String token = jwtTokenProvider.generate(userId, auth.getName(), role);
 
             return ResponseEntity.ok(ApiResponseDto.ok(new TokenResponseDto(token)));
 

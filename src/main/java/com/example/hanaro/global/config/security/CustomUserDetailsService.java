@@ -17,10 +17,12 @@ public class CustomUserDetailsService implements UserDetailsService {
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         var u = repo.findByEmail(email).orElseThrow(() -> new UsernameNotFoundException("not found"));
         var auth = new SimpleGrantedAuthority(u.getRole().name());
-        return org.springframework.security.core.userdetails.User
-                .withUsername(u.getEmail())
-                .password(u.getPassword())
-                .authorities(auth)
-                .build();
+
+        return new CustomUserDetails(
+                u.getId(),
+                u.getEmail(),
+                u.getPassword(),
+                java.util.List.of(auth)
+        );
     }
 }
