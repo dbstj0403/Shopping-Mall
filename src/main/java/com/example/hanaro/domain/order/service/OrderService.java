@@ -37,7 +37,7 @@ public class OrderService {
 
         List<CartItem> cartItems = cartItemRepository.findAllByCart_Id(cart.getId());
         if (cartItems.isEmpty()) {
-            throw new CustomException(ErrorCode.INVALID_INPUT, "장바구니가 비어 있습니다.");
+            throw new CustomException(ErrorCode.CART_EMPTY, "장바구니가 비어 있습니다.");
         }
 
         Order order = Order.builder()
@@ -56,7 +56,7 @@ public class OrderService {
 
             int updated = productRepository.decreaseStockIfEnough(p.getId(), qty);
             if (updated == 0) {
-                throw new CustomException(ErrorCode.INVALID_INPUT, "재고 부족: " + p.getName());
+                throw new CustomException(ErrorCode.OUT_OF_STOCK, "재고 부족: " + p.getName());
             }
 
             int line = p.getPrice() * qty;

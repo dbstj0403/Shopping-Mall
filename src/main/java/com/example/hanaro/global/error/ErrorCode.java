@@ -12,7 +12,9 @@ public enum ErrorCode {
     USER_NOT_FOUND(HttpStatus.NOT_FOUND, "E005", "사용자를 찾을 수 없습니다."),
     EMAIL_ALREADY_EXISTS(HttpStatus.CONFLICT, "E006", "이미 사용 중인 이메일입니다."),
     BAD_CREDENTIALS(HttpStatus.UNAUTHORIZED, "E007", "이메일 또는 비밀번호가 올바르지 않습니다."), // 추가
-    INTERNAL_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "E999", "서버 내부 오류가 발생했습니다.");
+    INTERNAL_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "E999", "서버 내부 오류가 발생했습니다."),
+    CART_EMPTY(HttpStatus.BAD_REQUEST, "E008", "장바구니가 비어 있습니다."),
+    OUT_OF_STOCK(HttpStatus.CONFLICT, "E009", "재고가 부족합니다.");
 
     private final HttpStatus status;
     private final String code;
