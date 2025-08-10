@@ -103,4 +103,9 @@ public class OrderService {
                 ));
         return OrderResponseDto.from(order);
     }
+
+    public List<OrderListItemDto> getAll() {
+        List<Order> orders = orderRepository.findAllByOrderByCreatedAtDesc();
+        return orders.stream().map(OrderListItemDto::from).toList();
+    }
 }
