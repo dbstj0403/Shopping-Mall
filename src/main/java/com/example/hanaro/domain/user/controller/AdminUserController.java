@@ -3,6 +3,8 @@ package com.example.hanaro.domain.user.controller;
 import com.example.hanaro.domain.user.dto.UserResponseDto;
 import com.example.hanaro.domain.user.service.UserService;
 import com.example.hanaro.global.payload.response.ApiResponseDto;
+import com.example.hanaro.global.swagger.annotations.user.AdminUserDeleteApiResponses;
+import com.example.hanaro.global.swagger.annotations.user.AdminUserListApiResponses;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -13,7 +15,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@Tag(name = "USER API", description = "어드민 전용 회원 관리 API입니다.")
+@Tag(name = "USER API", description = "관리자용 회원 관리 API입니다.")
 @RestController
 @RequestMapping("/api/admin/users")
 @RequiredArgsConstructor
@@ -23,6 +25,7 @@ public class AdminUserController {
 
     @Operation(summary = "회원 목록 조회", description = "전체 회원 목록을 조회합니다.")
     @PreAuthorize("hasAuthority('ROLE_ADMIN')")
+    @AdminUserListApiResponses
     @GetMapping(produces = "application/json")
     public ResponseEntity<ApiResponseDto<List<UserResponseDto>>> getAllUsers() {
         List<UserResponseDto> users = userService.getAllUsers();
@@ -31,6 +34,7 @@ public class AdminUserController {
 
     @Operation(summary = "회원 삭제", description = "회원 ID로 회원을 삭제합니다.")
     @ApiResponse(responseCode = "204", description = "삭제 성공")
+    @AdminUserDeleteApiResponses
     @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     @DeleteMapping(value = "/{id}", produces = "application/json")
     public ResponseEntity<Void> deleteUser(@PathVariable Long id) {

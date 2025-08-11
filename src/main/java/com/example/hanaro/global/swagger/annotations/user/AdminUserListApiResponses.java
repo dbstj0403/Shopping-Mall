@@ -1,4 +1,4 @@
-package com.example.hanaro.global.swagger.annotations.cart;
+package com.example.hanaro.global.swagger.annotations.user;
 
 import com.example.hanaro.global.swagger.docs.ApiResponseErrorDoc;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -12,46 +12,45 @@ import java.lang.annotation.*;
 @Target(ElementType.METHOD)
 @Retention(RetentionPolicy.RUNTIME)
 @ApiResponses({
-        @ApiResponse(responseCode = "200", description = "장바구니 수정 성공",
+        // 200 OK
+        @ApiResponse(responseCode = "200", description = "회원 목록 조회 성공",
                 content = @Content(mediaType = "application/json",
                         examples = @ExampleObject(value = """
             {
               "status": 200,
-              "message": "장바구니 수정 성공",
-              "data": {
-                "items": [
-                  {
-                    "productId": 1,
-                    "name": "ipad",
-                    "price": 11111,
-                    "quantity": 3,
-                    "lineTotal": 33333
-                  }
-                ],
-                "totalQuantity": 3,
-                "totalAmount": 33333
-              }
+              "message": "성공",
+              "data": [
+                { "id": 1,  "name": "별돌이", "email": "hanaro@email.com" },
+                { "id": 6,  "name": "별송이", "email": "admin@email.com" },
+                { "id": 7,  "name": "별벗",   "email": "hanaro2@email.com" },
+                { "id": 8,  "name": "별봄이", "email": "hanaro3@email.com" },
+                { "id": 9,  "name": "별프로", "email": "hanaro4@email.com" },
+                { "id": 11, "name": "별누리", "email": "hanaro6@email.com" },
+                { "id": 12, "name": "별별이", "email": "hanaro7@email.com" },
+                { "id": 13, "name": "hana",  "email": "hana@email.com" }
+              ]
             }
             """))),
-        @ApiResponse(responseCode = "400", description = "잘못된 수량",
+
+        // 401 Unauthorized
+        @ApiResponse(responseCode = "401", description = "인증 필요",
                 content = @Content(schema = @Schema(implementation = ApiResponseErrorDoc.class),
                         examples = @ExampleObject(value = """
-            { "status": 400, "message": "유효하지 않은 수량입니다.", "code": "E010" }
+            { "status": 401, "message": "인증이 필요합니다.", "code": "E002" }
             """))),
-        @ApiResponse(responseCode = "404", description = "상품/장바구니 아이템 없음",
+
+        // 403 Forbidden
+        @ApiResponse(responseCode = "403", description = "권한 없음",
                 content = @Content(schema = @Schema(implementation = ApiResponseErrorDoc.class),
                         examples = @ExampleObject(value = """
-            { "status": 404, "message": "장바구니 아이템을 찾을 수 없습니다.", "code": "E004" }
+            { "status": 403, "message": "접근 권한이 없습니다.", "code": "E003" }
             """))),
-        @ApiResponse(responseCode = "409", description = "재고 부족",
-                content = @Content(schema = @Schema(implementation = ApiResponseErrorDoc.class),
-                        examples = @ExampleObject(value = """
-            { "status": 409, "message": "재고가 부족합니다.", "code": "E005" }
-            """))),
+
+        // 500 Internal Server Error
         @ApiResponse(responseCode = "500", description = "서버 내부 오류",
                 content = @Content(schema = @Schema(implementation = ApiResponseErrorDoc.class),
                         examples = @ExampleObject(value = """
             { "status": 500, "message": "서버 내부 오류가 발생했습니다.", "code": "E999" }
             """)))
 })
-public @interface CartUpdateQtyApiResponses {}
+public @interface AdminUserListApiResponses {}

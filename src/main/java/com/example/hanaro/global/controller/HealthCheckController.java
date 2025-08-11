@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
+@Tag(name = "HEALTH CHECK API", description = "헬스 체크용 API입니다.")
 @RequestMapping("/health")
 public class HealthCheckController {
 

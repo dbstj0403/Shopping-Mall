@@ -6,6 +6,7 @@ import com.example.hanaro.domain.product.dto.ProductStockUpdateRequestDto;
 import com.example.hanaro.domain.product.dto.ProductUpdateRequestDto;
 import com.example.hanaro.domain.product.service.AdminProductService;
 import com.example.hanaro.global.payload.response.ApiResponseDto;
+import com.example.hanaro.global.swagger.annotations.product.*;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Encoding;
@@ -61,6 +62,7 @@ public class AdminProductController {
                     }
             )
     )
+    @AdminProductCreateApiResponses
     @PreAuthorize("hasRole('ADMIN')")
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<ApiResponseDto<ProductResponseDto>> createProduct(
@@ -73,6 +75,7 @@ public class AdminProductController {
 
     @Operation(summary = "상품 목록 조회", description = "전체 상품 목록을 조회합니다.")
     @PreAuthorize("hasRole('ADMIN')")
+    @AdminProductListApiResponses
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<ApiResponseDto<List<ProductResponseDto>>> getAllProducts() {
         List<ProductResponseDto> products = adminProductService.getAllProducts();
@@ -81,6 +84,7 @@ public class AdminProductController {
 
     @Operation(summary = "상품 삭제", description = "상품 ID로 단일 상품을 삭제합니다.")
     @PreAuthorize("hasRole('ADMIN')")
+    @AdminProductDeleteApiResponses
     @DeleteMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<ApiResponseDto<Void>> deleteProduct(
             @PathVariable("id") @Positive(message = "유효한 상품 ID여야 합니다.") Long id
@@ -106,6 +110,7 @@ public class AdminProductController {
                 - 파일 ≤ 512KB
                 """
     )
+    @AdminProductUpdateApiResponses
     @RequestBody(
             required = true,
             content = @Content(
@@ -141,6 +146,7 @@ public class AdminProductController {
                     )
             )
     )
+    @AdminProductUpdateStockApiResponses
     @PreAuthorize("hasRole('ADMIN')")
     @PatchMapping(value = "/{id}/stock", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<ApiResponseDto<ProductResponseDto>> updateStock(

@@ -4,6 +4,9 @@ import com.example.hanaro.domain.order.dto.OrderListItemDto;
 import com.example.hanaro.domain.order.dto.OrderResponseDto;
 import com.example.hanaro.domain.order.service.OrderService;
 import com.example.hanaro.global.payload.response.ApiResponseDto;
+import com.example.hanaro.global.swagger.annotations.order.OrderCreateApiResponses;
+import com.example.hanaro.global.swagger.annotations.order.OrderDetailApiResponses;
+import com.example.hanaro.global.swagger.annotations.order.OrderListApiResponses;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -27,6 +30,7 @@ public class UserOrderController {
 
     @Operation(summary = "주문 생성(장바구니 기반)", description = "장바구니 아이템으로 주문을 생성합니다. 재고 부족 시 실패합니다.")
     @PreAuthorize("hasAnyAuthority('ROLE_USER','ROLE_ADMIN')")
+    @OrderCreateApiResponses
     @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<ApiResponseDto<OrderResponseDto>> create(@AuthenticationPrincipal Long userId) {
         return ResponseEntity.ok(
@@ -36,6 +40,7 @@ public class UserOrderController {
 
     @Operation(summary = "내 주문 목록", description = "본인이 주문한 내역을 최신순으로 조회합니다.")
     @PreAuthorize("hasAnyAuthority('ROLE_USER','ROLE_ADMIN')")
+    @OrderListApiResponses
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<ApiResponseDto<List<OrderListItemDto>>> list(@AuthenticationPrincipal Long userId) {
         var res = orderService.getMyOrders(userId);
@@ -44,6 +49,7 @@ public class UserOrderController {
 
     @Operation(summary = "내 주문 상세", description = "내 주문 중 하나의 상세를 조회합니다.")
     @PreAuthorize("hasAnyAuthority('ROLE_USER','ROLE_ADMIN')")
+    @OrderDetailApiResponses
     @GetMapping(value = "/{orderId}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<ApiResponseDto<OrderResponseDto>> detail(
             @AuthenticationPrincipal Long userId,

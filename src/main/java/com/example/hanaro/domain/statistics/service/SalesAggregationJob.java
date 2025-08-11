@@ -26,7 +26,6 @@ public class SalesAggregationJob {
     private final DailySalesSummaryRepository summaryRepo;
     private final ProductDailySalesRepository productRepo;
 
-    /** 테스트용: 오늘 17:30 KST에 전일 집계 */
     @Scheduled(cron = "0 0 0 * * *", zone = "Asia/Seoul")
     @Transactional
     public void runDailyAggregation() {
@@ -34,7 +33,6 @@ public class SalesAggregationJob {
         aggregateFor(target);
     }
 
-    /** 특정 일자 수동 집계 (관리자 API에서 사용) */
     @Transactional
     public void aggregateFor(LocalDate date) {
         LocalDateTime start = date.atStartOfDay();

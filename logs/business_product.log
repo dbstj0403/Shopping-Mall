@@ -1,0 +1,4 @@
+2025-08-11 23:06:25 | product | create id=11 name='마루킁킁' price=300 stock=449 image=/static/upload/2025/08/11/190ab1c087e54dcf83617a3124d8eab5.png
+2025-08-11 23:07:47 | product | create id=12 name='가나디' price=55900 stock=333 image=/static/upload/2025/08/11/acc669f277a14112b07e239c0640069a.jpeg
+2025-08-11 23:08:12 | product | stock-update id=12 before=15 after=15
+2025-08-11 23:08:56 | product | update id=12 name:가나디->듀가나디 price:55900->890000 stock:15->25

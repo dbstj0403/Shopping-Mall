@@ -18,14 +18,13 @@ import java.lang.annotation.*;
             {
               "status": 200,
               "message": "장바구니 조회 성공",
-              "code": null,
               "data": {
-                "totalQuantity": 3,
-                "totalPrice": 35000,
                 "items": [
                   { "productId": 1, "name": "티셔츠", "price": 10000, "quantity": 2, "lineTotal": 20000 },
                   { "productId": 2, "name": "모자", "price": 15000, "quantity": 1, "lineTotal": 15000 }
-                ]
+                ],
+                "totalQuantity": 3,
+                "totalAmount": 35000
               }
             }
             """))),

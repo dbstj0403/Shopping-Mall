@@ -18,7 +18,6 @@ import java.lang.annotation.*;
             {
               "status": 200,
               "message": "장바구니를 비웠습니다.",
-              "code": null,
               "data": { "totalQuantity": 0, "totalPrice": 0, "items": [] }
             }
             """))),

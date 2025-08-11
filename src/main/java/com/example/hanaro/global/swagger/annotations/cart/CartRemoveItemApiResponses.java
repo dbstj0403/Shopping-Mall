@@ -12,17 +12,16 @@ import java.lang.annotation.*;
 @Target(ElementType.METHOD)
 @Retention(RetentionPolicy.RUNTIME)
 @ApiResponses({
-        @ApiResponse(responseCode = "200", description = "장바구니 아이템 제거 성공",
+        @ApiResponse(responseCode = "200", description = "장바구니 아이템 삭제 성공",
                 content = @Content(mediaType = "application/json",
                         examples = @ExampleObject(value = """
             {
               "status": 200,
-              "message": "아이템 제거 성공",
-              "code": null,
+              "message": "장바구니 아이템 삭제 성공",
               "data": {
-                "removedProductId": 1,
-                "totalQuantity": 1,
-                "totalPrice": 15000
+                "items": [],
+                "totalQuantity": 0,
+                "totalAmount": 0
               }
             }
             """))),
