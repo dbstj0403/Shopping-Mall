@@ -44,4 +44,19 @@ public class Order {
         this.items.add(item);
         item.setOrder(this);
     }
+
+    // 상태 변경 기준 시각 (전환 타이머는 이 값을 기준으로 계산)
+    @Column(nullable = false)
+    private LocalDateTime statusChangedAt;
+
+    @PrePersist
+    public void onCreate() {
+        if (statusChangedAt == null) statusChangedAt = LocalDateTime.now();
+    }
+
+    /** 상태 변경 시 항상 이 메서드 사용 */
+    public void changeStatus(OrderStatus next) {
+        this.status = next;
+        this.statusChangedAt = LocalDateTime.now();
+    }
 }
