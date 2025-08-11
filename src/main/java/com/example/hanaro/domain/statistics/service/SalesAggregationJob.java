@@ -27,7 +27,7 @@ public class SalesAggregationJob {
     private final ProductDailySalesRepository productRepo;
 
     /** 테스트용: 오늘 17:30 KST에 전일 집계 */
-    @Scheduled(cron = "0 30 17 * * *", zone = "Asia/Seoul")
+    @Scheduled(cron = "0 0 0 * * *", zone = "Asia/Seoul")
     @Transactional
     public void runDailyAggregation() {
         LocalDate target = LocalDate.now(ZoneId.of("Asia/Seoul")).minusDays(1);
