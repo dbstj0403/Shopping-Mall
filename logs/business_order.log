@@ -1,0 +1,3 @@
+2025-08-11 14:28:35 | order | create:start userId=1 cartId=1
+2025-08-11 14:28:35 | order | create:success orderId=2 userId=1 items=1 totalQty=2 totalAmt=22222
+2025-08-11 14:28:35 | order | cart:cleared userId=1 cartId=1

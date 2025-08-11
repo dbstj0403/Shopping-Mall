@@ -15,6 +15,8 @@ import com.example.hanaro.domain.product.repository.ProductRepository;
 import com.example.hanaro.global.error.CustomException;
 import com.example.hanaro.global.error.ErrorCode;
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -29,14 +31,22 @@ public class OrderService {
     private final ProductRepository productRepository;
     private final OrderRepository orderRepository;
 
+    // 비즈니스 주문 로그 (logback-spring.xml 에서 business.order 로 파일 분리)
+    private static final Logger bizOrder = LoggerFactory.getLogger("business.order");
+
     /** 장바구니 기반 주문 생성 (재고 검증+차감, 실패 시 전체 롤백) */
     @Transactional
     public OrderResponseDto createFromCart(Long userId) {
         Cart cart = cartRepository.findByUser_Id(userId)
                 .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND, "장바구니가 없습니다."));
 
+        // 시작 로그
+        bizOrder.info("create:start userId={} cartId={}", userId, cart.getId());
+
         List<CartItem> cartItems = cartItemRepository.findAllByCart_Id(cart.getId());
         if (cartItems.isEmpty()) {
+            // 빈 장바구니 경고 로그
+            bizOrder.warn("create:empty-cart userId={} cartId={}", userId, cart.getId());
             throw new CustomException(ErrorCode.CART_EMPTY, "장바구니가 비어 있습니다.");
         }
 
@@ -56,6 +66,9 @@ public class OrderService {
 
             int updated = productRepository.decreaseStockIfEnough(p.getId(), qty);
             if (updated == 0) {
+                // 재고 부족 경고 로그
+                bizOrder.warn("create:out-of-stock userId={} productId={} name='{}' need={}",
+                        userId, p.getId(), p.getName(), qty);
                 throw new CustomException(ErrorCode.OUT_OF_STOCK, "재고 부족: " + p.getName());
             }
 
@@ -84,11 +97,16 @@ public class OrderService {
         cart.getItems().clear();
         cartRepository.save(cart);
 
+        // 성공/정리 로그
+        bizOrder.info("create:success orderId={} userId={} items={} totalQty={} totalAmt={}",
+                saved.getId(), userId, order.getItems().size(), totalQty, totalAmt);
+        bizOrder.info("cart:cleared userId={} cartId={}", userId, cart.getId());
+
         return OrderResponseDto.from(saved);
     }
 
     @Transactional(readOnly = true)
-    public java.util.List<OrderListItemDto> getMyOrders(Long userId) {
+    public List<OrderListItemDto> getMyOrders(Long userId) {
         return orderRepository.findAllByUser_IdOrderByIdDesc(userId)
                 .stream()
                 .map(OrderListItemDto::from)
@@ -98,23 +116,26 @@ public class OrderService {
     @Transactional(readOnly = true)
     public OrderResponseDto getMyOrder(Long userId, Long orderId) {
         var order = orderRepository.findByIdAndUser_Id(orderId, userId)
-                .orElseThrow(() -> new com.example.hanaro.global.error.CustomException(
-                        com.example.hanaro.global.error.ErrorCode.NOT_FOUND, "주문을 찾을 수 없습니다."
+                .orElseThrow(() -> new CustomException(
+                        ErrorCode.NOT_FOUND, "주문을 찾을 수 없습니다."
                 ));
         return OrderResponseDto.from(order);
     }
 
+    @Transactional(readOnly = true)
     public List<OrderListItemDto> getAll() {
         List<Order> orders = orderRepository.findAllByOrderByCreatedAtDesc();
         return orders.stream().map(OrderListItemDto::from).toList();
     }
 
+    @Transactional(readOnly = true)
     public OrderListItemDto getById(Long orderId) {
         return orderRepository.findById(orderId)
                 .map(OrderListItemDto::from)
                 .orElseThrow(() -> new IllegalArgumentException("주문을 찾을 수 없습니다: " + orderId));
     }
 
+    @Transactional(readOnly = true)
     public List<OrderListItemDto> searchByProductName(String name) {
         var orders = orderRepository.findAllWithItemsByProductName(name.trim());
         return orders.stream().map(OrderListItemDto::from).toList();

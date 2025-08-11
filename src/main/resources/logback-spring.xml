@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration scan="true">
+
+    <!-- 로그 저장 폴더 -->
+    <property name="LOG_DIR" value="logs"/>
+
+    <!-- 공통 패턴 -->
+    <property name="PATTERN"
+              value="%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n"/>
+
+    <!-- 1) 콘솔 -->
+    <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>${PATTERN}</pattern>
+            <charset>UTF-8</charset>
+        </encoder>
+    </appender>
+
+    <!-- 2) 상품 비즈니스 로그 (일일 롤링) -->
+    <appender name="BUSINESS_PRODUCT"
+              class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${LOG_DIR}/business_product.log</file>
+        <encoder>
+            <pattern>%d{yyyy-MM-dd HH:mm:ss} | product | %msg%n</pattern>
+            <charset>UTF-8</charset>
+        </encoder>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <!-- 날짜별 파일 -->
+            <fileNamePattern>${LOG_DIR}/business_product.%d{yyyy-MM-dd}.log</fileNamePattern>
+            <maxHistory>30</maxHistory>
+            <totalSizeCap>500MB</totalSizeCap>
+            <cleanHistoryOnStart>true</cleanHistoryOnStart>
+        </rollingPolicy>
+    </appender>
+
+    <!-- 3) 주문 비즈니스 로그 (일일 롤링) -->
+    <appender name="BUSINESS_ORDER"
+              class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${LOG_DIR}/business_order.log</file>
+        <encoder>
+            <pattern>%d{yyyy-MM-dd HH:mm:ss} | order | %msg%n</pattern>
+            <charset>UTF-8</charset>
+        </encoder>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${LOG_DIR}/business_order.%d{yyyy-MM-dd}.log</fileNamePattern>
+            <maxHistory>30</maxHistory>
+            <totalSizeCap>500MB</totalSizeCap>
+            <cleanHistoryOnStart>true</cleanHistoryOnStart>
+        </rollingPolicy>
+    </appender>
+
+    <!-- 애플리케이션 기본 로그는 콘솔로 -->
+    <root level="INFO">
+        <appender-ref ref="CONSOLE"/>
+    </root>
+
+    <!-- 비즈니스 전용 로거 (additivity=false 로 루트로 전파 막기) -->
+    <logger name="business.product" level="INFO" additivity="true">
+        <appender-ref ref="BUSINESS_PRODUCT"/>
+    </logger>
+
+    <logger name="business.order" level="INFO" additivity="true">
+        <appender-ref ref="BUSINESS_ORDER"/>
+    </logger>
+</configuration>
