@@ -6,7 +6,12 @@ import com.example.hanaro.domain.user.dto.TokenResponseDto;
 import com.example.hanaro.global.config.security.CustomUserDetails;
 import com.example.hanaro.global.error.ErrorCode;
 import com.example.hanaro.global.payload.response.ApiResponseDto;
+import com.example.hanaro.global.swagger.annotations.LoginApiResponses;
+import com.example.hanaro.global.swagger.docs.ApiResponseTokenDoc;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -24,6 +29,7 @@ public class UserAuthController {
     private final JwtTokenProvider jwtTokenProvider;
 
     @Operation(summary = "로그인", description = "JWT 토큰 기반 로그인 API입니다.")
+    @LoginApiResponses
     @PostMapping("/login")
     public ResponseEntity<ApiResponseDto<TokenResponseDto>> login(@RequestBody LoginRequestDto req) {
         try {
