@@ -12,6 +12,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/admin/stats")
@@ -39,5 +40,27 @@ public class AdminStatsController {
                 .orElseThrow(() -> new IllegalArgumentException("해당 일자 통계 없음"));
         var dto = new DailyStatsDto(s.getStatDate(), s.getTotalSales(), s.getTotalOrders());
         return ResponseEntity.ok(ApiResponseDto.ok(dto));
+    }
+
+    @PreAuthorize("hasRole('ADMIN')")
+    @GetMapping("/daily/all")
+    public ResponseEntity<ApiResponseDto<List<DailyStatsDto>>> listAllDaily(
+            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate from,
+            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate to
+    ) {
+        List<DailySalesSummary> rows;
+        if (from == null && to == null) {
+            rows = summaryRepo.findAllByOrderByStatDateDesc();
+        } else {
+            LocalDate fromSafe = (from != null) ? from : LocalDate.of(1970,1,1);
+            LocalDate toSafe   = (to   != null) ? to   : LocalDate.of(3000,12,31);
+            rows = summaryRepo.findByStatDateBetweenOrderByStatDateDesc(fromSafe, toSafe);
+        }
+
+        var body = rows.stream()
+                .map(s -> new DailyStatsDto(s.getStatDate(), s.getTotalSales(), s.getTotalOrders()))
+                .toList();
+
+        return ResponseEntity.ok(ApiResponseDto.ok(body));
     }
 }
