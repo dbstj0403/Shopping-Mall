@@ -5,6 +5,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 public interface DailySalesSummaryRepository extends JpaRepository<DailySalesSummary, LocalDate> {
     // 전체 최신순
@@ -12,4 +13,5 @@ public interface DailySalesSummaryRepository extends JpaRepository<DailySalesSum
 
     // 기간 필터(옵션) + 최신순
     List<DailySalesSummary> findByStatDateBetweenOrderByStatDateDesc(LocalDate from, LocalDate to);
+    Optional<DailySalesSummary> findTopByOrderByStatDateDesc();
 }
