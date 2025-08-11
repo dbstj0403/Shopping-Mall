@@ -1,6 +1,6 @@
- package com.example.hanaro.global.swagger.annotations;
+ package com.example.hanaro.global.swagger.annotations.user;
 
-import com.example.hanaro.global.swagger.docs.ApiResponseJoinDoc;
+import com.example.hanaro.global.swagger.docs.user.ApiResponseJoinDoc;
 import com.example.hanaro.global.swagger.docs.ApiResponseErrorDoc;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.ExampleObject;

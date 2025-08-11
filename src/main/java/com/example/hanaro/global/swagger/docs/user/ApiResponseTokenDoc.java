@@ -1,4 +1,4 @@
-package com.example.hanaro.global.swagger.docs;
+package com.example.hanaro.global.swagger.docs.user;
 
 import com.example.hanaro.domain.user.dto.TokenResponseDto;
 import io.swagger.v3.oas.annotations.media.Schema;

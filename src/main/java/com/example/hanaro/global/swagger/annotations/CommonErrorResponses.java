@@ -1,4 +1,4 @@
-package com.example.hanaro.global.swagger.docs;
+package com.example.hanaro.global.swagger.annotations;
 
 import com.example.hanaro.global.swagger.docs.ApiResponseErrorDoc;
 import io.swagger.v3.oas.annotations.media.Content;

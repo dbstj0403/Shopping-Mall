@@ -1,6 +1,5 @@
-package com.example.hanaro.global.swagger.annotations;
+package com.example.hanaro.global.swagger.annotations.cart;
 
-import com.example.hanaro.global.swagger.docs.ApiResponseTokenDoc;
 import com.example.hanaro.global.swagger.docs.ApiResponseErrorDoc;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.ExampleObject;
@@ -13,12 +12,22 @@ import java.lang.annotation.*;
 @Target(ElementType.METHOD)
 @Retention(RetentionPolicy.RUNTIME)
 @ApiResponses({
-        @ApiResponse(responseCode = "200", description = "로그인 성공",
-                content = @Content(schema = @Schema(implementation = ApiResponseTokenDoc.class))),
-        @ApiResponse(responseCode = "400", description = "잘못된 요청 또는 자격증명 불일치",
-                content = @Content(schema = @Schema(implementation = ApiResponseErrorDoc.class),
+        @ApiResponse(responseCode = "200", description = "장바구니 조회 성공",
+                content = @Content(mediaType = "application/json",
                         examples = @ExampleObject(value = """
-            { "status": 400, "message": "이메일 또는 비밀번호가 올바르지 않습니다.", "code": "E007" }
+            {
+              "status": 200,
+              "message": "장바구니 조회 성공",
+              "code": null,
+              "data": {
+                "totalQuantity": 3,
+                "totalPrice": 35000,
+                "items": [
+                  { "productId": 1, "name": "티셔츠", "price": 10000, "quantity": 2, "lineTotal": 20000 },
+                  { "productId": 2, "name": "모자", "price": 15000, "quantity": 1, "lineTotal": 15000 }
+                ]
+              }
+            }
             """))),
         @ApiResponse(responseCode = "500", description = "서버 내부 오류",
                 content = @Content(schema = @Schema(implementation = ApiResponseErrorDoc.class),
@@ -26,4 +35,4 @@ import java.lang.annotation.*;
             { "status": 500, "message": "서버 내부 오류가 발생했습니다.", "code": "E999" }
             """)))
 })
-public @interface LoginApiResponses {}
+public @interface CartGetApiResponses {}

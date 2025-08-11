@@ -1,8 +1,6 @@
- package com.example.hanaro.global.swagger.docs;
+ package com.example.hanaro.global.swagger.docs.product;
 
-import com.example.hanaro.domain.product.dto.ProductListItemDto;
 import io.swagger.v3.oas.annotations.media.Schema;
-import java.util.List;
 
  @Schema(name = "ApiResponse<ProductList>", description = "상품 목록 응답")
  public class ApiResponseProductListDoc {

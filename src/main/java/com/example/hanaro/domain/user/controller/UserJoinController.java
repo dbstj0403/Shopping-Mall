@@ -4,18 +4,13 @@ import com.example.hanaro.domain.user.dto.JoinResponseDto;
 import com.example.hanaro.domain.user.dto.JoinRequestDto;
 import com.example.hanaro.domain.user.service.UserService;
 import com.example.hanaro.global.payload.response.ApiResponseDto;
-import com.example.hanaro.global.swagger.annotations.JoinApiResponses;
-import com.example.hanaro.global.swagger.docs.CommonErrorResponses;
+import com.example.hanaro.global.swagger.annotations.user.JoinApiResponses;
 import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.media.Content;
-import io.swagger.v3.oas.annotations.media.Schema;
-import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import com.example.hanaro.global.swagger.docs.ApiResponseJoinDoc;
 
 @Tag(name = "USER API", description = "회원 관련 API입니다.")
 @RestController

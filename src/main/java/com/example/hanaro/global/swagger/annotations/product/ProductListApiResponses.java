@@ -1,8 +1,7 @@
-package com.example.hanaro.global.swagger.annotations;
+package com.example.hanaro.global.swagger.annotations.product;
 
 import com.example.hanaro.global.swagger.docs.ApiResponseErrorDoc;
-import com.example.hanaro.global.swagger.docs.ApiResponseProductErrorDoc;
-import com.example.hanaro.global.swagger.docs.ApiResponseProductListDoc;
+import com.example.hanaro.global.swagger.docs.product.ApiResponseProductListDoc;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.ExampleObject;
 import io.swagger.v3.oas.annotations.media.Schema;

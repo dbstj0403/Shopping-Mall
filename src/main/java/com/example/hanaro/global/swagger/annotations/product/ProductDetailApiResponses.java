@@ -1,4 +1,4 @@
-package com.example.hanaro.global.swagger.annotations;
+package com.example.hanaro.global.swagger.annotations.product;
 
 import com.example.hanaro.global.swagger.docs.ApiResponseErrorDoc;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -36,7 +36,6 @@ import java.lang.annotation.Target;
                               "status": 404,
                               "message": "상품을 찾을 수 없습니다.",
                               "code": "E004",
-                              "data": null
                             }
                         """))),
         @ApiResponse(responseCode = "500", description = "서버 내부 오류",
@@ -46,7 +45,6 @@ import java.lang.annotation.Target;
                               "status": 500,
                               "message": "서버 내부 오류가 발생했습니다.",
                               "code": "E999",
-                              "data": null
                             }
                         """)))
 })
