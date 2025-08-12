@@ -22,7 +22,6 @@ import java.lang.annotation.Target;
                 {
                   "status": 200,
                   "message": "상품 상세 조회 성공",
-                  "code": null,
                   "data": {
                     "name": "샘플 상품",
                     "price": 15000,
@@ -34,6 +33,7 @@ import java.lang.annotation.Target;
         // 404 Not Found
         @ApiResponse(responseCode = "404", description = "상품 없음",
                 content = @Content(schema = @Schema(implementation = ApiResponseErrorDoc.class),
+                        mediaType = "application/json",
                         examples = @ExampleObject(value = """
                 {
                   "status": 404,

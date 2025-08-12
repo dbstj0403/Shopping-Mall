@@ -35,6 +35,7 @@ import java.lang.annotation.*;
         // 400 Bad Request (장바구니 비어 있음 등)
         @ApiResponse(responseCode = "400", description = "잘못된 요청",
                 content = @Content(schema = @Schema(implementation = ApiResponseErrorDoc.class),
+                        mediaType = "application/json",
                         examples = {
                                 @ExampleObject(name = "EMPTY_CART", value = """
                 { "status": 400, "message": "장바구니가 비어 있습니다.", "code": "E008" }
@@ -44,6 +45,7 @@ import java.lang.annotation.*;
         // 409 Conflict (재고 부족)
         @ApiResponse(responseCode = "409", description = "재고 부족/상태 충돌",
                 content = @Content(schema = @Schema(implementation = ApiResponseErrorDoc.class),
+                        mediaType = "application/json",
                         examples = @ExampleObject(value = """
             { "status": 409, "message": "재고 부족: ipad", "code": "E009" }
             """))),
@@ -51,6 +53,7 @@ import java.lang.annotation.*;
         // 401 Unauthorized
         @ApiResponse(responseCode = "401", description = "인증 필요",
                 content = @Content(schema = @Schema(implementation = ApiResponseErrorDoc.class),
+                        mediaType = "application/json",
                         examples = @ExampleObject(value = """
             { "status": 401, "message": "인증이 필요합니다.", "code": "E002" }
             """))),
@@ -58,6 +61,7 @@ import java.lang.annotation.*;
         // 403 Forbidden
         @ApiResponse(responseCode = "403", description = "권한 없음",
                 content = @Content(schema = @Schema(implementation = ApiResponseErrorDoc.class),
+                        mediaType = "application/json",
                         examples = @ExampleObject(value = """
             { "status": 403, "message": "접근 권한이 없습니다.", "code": "E003" }
             """))),
@@ -65,6 +69,7 @@ import java.lang.annotation.*;
         // 500 Internal Server Error
         @ApiResponse(responseCode = "500", description = "서버 내부 오류",
                 content = @Content(schema = @Schema(implementation = ApiResponseErrorDoc.class),
+                        mediaType = "application/json",
                         examples = @ExampleObject(value = """
             { "status": 500, "message": "서버 내부 오류가 발생했습니다.", "code": "E999" }
             """)))

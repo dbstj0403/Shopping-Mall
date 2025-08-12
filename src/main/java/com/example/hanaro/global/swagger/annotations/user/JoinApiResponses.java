@@ -35,6 +35,7 @@ import java.lang.annotation.Target;
         // 400 Bad Request
         @ApiResponse(responseCode = "400", description = "잘못된 요청",
                 content = @Content(schema = @Schema(implementation = ApiResponseErrorDoc.class),
+                        mediaType = "application/json",
                         examples = @ExampleObject(value = """
             { "status": 400, "message": "잘못된 요청입니다.", "code": "E001" }
             """))
@@ -43,6 +44,7 @@ import java.lang.annotation.Target;
         // 409 Conflict (이메일 중복)
         @ApiResponse(responseCode = "409", description = "이메일 중복",
                 content = @Content(schema = @Schema(implementation = ApiResponseErrorDoc.class),
+                        mediaType = "application/json",
                         examples = @ExampleObject(value = """
             { "status": 409, "message": "이미 사용 중인 이메일입니다.", "code": "E006" }
             """))
@@ -51,6 +53,7 @@ import java.lang.annotation.Target;
         // 500 Internal Server Error
         @ApiResponse(responseCode = "500", description = "서버 내부 오류",
                 content = @Content(schema = @Schema(implementation = ApiResponseErrorDoc.class),
+                        mediaType = "application/json",
                         examples = @ExampleObject(value = """
             { "status": 500, "message": "서버 내부 오류가 발생했습니다.", "code": "E999" }
             """))

@@ -27,7 +27,7 @@ public class AdminOrderController {
     @GetMapping
     @PreAuthorize("hasRole('ADMIN')")
     @AdminOrderListApiResponses
-    @Operation(summary = "주문 전체 목록", description = "생성일 내림차순으로 전체 주문을 반환합니다. (유저/아이템 포함)")
+    @Operation(summary = "주문 전체 목록", description = "전체 주문을 조회합니다.")
     public ApiResponseDto<List<OrderListItemDto>> getAll() {
         return ApiResponseDto.ok(adminOrderService.getAll());
     }
@@ -36,7 +36,7 @@ public class AdminOrderController {
     @GetMapping("/{orderId}")
     @PreAuthorize("hasRole('ADMIN')")
     @AdminOrderDetailApiResponses
-    @Operation(summary = "주문 단건 조회", description = "주문 ID로 단건을 조회합니다.")
+    @Operation(summary = "주문 단건 조회", description = "아이디로 주문 단건을 조회합니다.")
     public ApiResponseDto<OrderListItemDto> getById(@PathVariable Long orderId) {
         return ApiResponseDto.ok(adminOrderService.getById(orderId));
     }
@@ -45,7 +45,7 @@ public class AdminOrderController {
     @GetMapping("/search")
     @PreAuthorize("hasRole('ADMIN')")
     @AdminOrderSearchApiResponses
-    @Operation(summary = "상품명으로 주문 검색", description = "상품명을 포함하는 주문들을 반환합니다. 기본정렬 createdAt DESC")
+    @Operation(summary = "상품명으로 주문 검색", description = "상품명을 포함하는 주문들을 반환합니다.")
     public ApiResponseDto<List<OrderListItemDto>> searchByProductName(@RequestParam String productName) {
         return ApiResponseDto.ok(adminOrderService.searchByProductName(productName));
     }

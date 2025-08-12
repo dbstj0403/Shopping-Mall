@@ -30,6 +30,7 @@ import java.lang.annotation.*;
             """))),
         @ApiResponse(responseCode = "500", description = "서버 내부 오류",
                 content = @Content(schema = @Schema(implementation = ApiResponseErrorDoc.class),
+                        mediaType = "application/json",
                         examples = @ExampleObject(value = """
             { "status": 500, "message": "서버 내부 오류가 발생했습니다.", "code": "E999" }
             """)))

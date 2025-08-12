@@ -82,7 +82,7 @@ public class AdminProductController {
         return ResponseEntity.ok(ApiResponseDto.ok("상품 목록 조회 성공", products));
     }
 
-    @Operation(summary = "상품 삭제", description = "상품 ID로 단일 상품을 삭제합니다.")
+    @Operation(summary = "상품 삭제", description = "아이디로 단일 상품을 삭제합니다.")
     @PreAuthorize("hasRole('ADMIN')")
     @AdminProductDeleteApiResponses
     @DeleteMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -136,7 +136,7 @@ public class AdminProductController {
     // ====== 재고만 수정 (PATCH) ======
     @Operation(
             summary = "상품 재고 수정 (관리자)",
-            description = "상품 ID와 재고를 받아 해당 상품의 재고를 갱신합니다.",
+            description = "상품 아이디와 재고를 받아 해당 상품의 재고를 갱신합니다.",
             requestBody = @RequestBody(
                     required = true,
                     content = @Content(

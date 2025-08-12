@@ -28,7 +28,7 @@ public class UserOrderController {
 
     private final OrderService orderService;
 
-    @Operation(summary = "주문 생성(장바구니 기반)", description = "장바구니 아이템으로 주문을 생성합니다. 재고 부족 시 실패합니다.")
+    @Operation(summary = "주문 생성 (장바구니 기반)", description = "장바구니 아이템으로 주문을 생성합니다. 재고 부족 시 실패합니다.")
     @PreAuthorize("hasAnyAuthority('ROLE_USER','ROLE_ADMIN')")
     @OrderCreateApiResponses
     @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)

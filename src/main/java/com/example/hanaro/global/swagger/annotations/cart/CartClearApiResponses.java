@@ -23,11 +23,13 @@ import java.lang.annotation.*;
             """))),
         @ApiResponse(responseCode = "400", description = "장바구니가 이미 비었음(선택사항)",
                 content = @Content(schema = @Schema(implementation = ApiResponseErrorDoc.class),
+                        mediaType = "application/json",
                         examples = @ExampleObject(value = """
             { "status": 400, "message": "장바구니가 비어 있습니다.", "code": "E006" }
             """))),
         @ApiResponse(responseCode = "500", description = "서버 내부 오류",
                 content = @Content(schema = @Schema(implementation = ApiResponseErrorDoc.class),
+                        mediaType = "application/json",
                         examples = @ExampleObject(value = """
             { "status": 500, "message": "서버 내부 오류가 발생했습니다.", "code": "E999" }
             """)))

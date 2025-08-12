@@ -32,21 +32,25 @@ import java.lang.annotation.*;
       """))),
         @ApiResponse(responseCode = "404", description = "주문 없음",
                 content = @Content(schema = @Schema(implementation = ApiResponseErrorDoc.class),
+                        mediaType = "application/json",
                         examples = @ExampleObject(value = """
       { "status": 404, "message": "주문을 찾을 수 없습니다.", "code": "E004" }
       """))),
         @ApiResponse(responseCode = "401", description = "인증 필요",
                 content = @Content(schema = @Schema(implementation = ApiResponseErrorDoc.class),
+                        mediaType = "application/json",
                         examples = @ExampleObject(value = """
       { "status": 401, "message": "인증이 필요합니다.", "code": "E002" }
       """))),
         @ApiResponse(responseCode = "403", description = "권한 없음",
                 content = @Content(schema = @Schema(implementation = ApiResponseErrorDoc.class),
+                        mediaType = "application/json",
                         examples = @ExampleObject(value = """
       { "status": 403, "message": "접근 권한이 없습니다.", "code": "E003" }
       """))),
         @ApiResponse(responseCode = "500", description = "서버 내부 오류",
                 content = @Content(schema = @Schema(implementation = ApiResponseErrorDoc.class),
+                        mediaType = "application/json",
                         examples = @ExampleObject(value = """
       { "status": 500, "message": "서버 내부 오류가 발생했습니다.", "code": "E999" }
       """)))
