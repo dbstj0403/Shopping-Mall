@@ -11,9 +11,11 @@ import java.util.List;
 public interface ProductRepository extends JpaRepository<Product, Long> {
     List<Product> findByStockGreaterThan(int stock);
     List<Product> findByNameContainingIgnoreCaseAndStockGreaterThan(String name, int stock);
+
     @Modifying(clearAutomatically = false, flushAutomatically = false)
-    @Query("UPDATE Product p SET p.stock = p.stock - :qty " +
-            "WHERE p.id = :productId AND p.stock >= :qty")
-    int decreaseStockIfEnough(@Param("productId") Long productId,
-                              @Param("qty") int qty);
+    @Query("""
+        UPDATE Product p SET p.stock = p.stock - :qty
+        WHERE p.id = :productId AND p.stock >= :qty
+    """)
+    int decreaseStockIfEnough(@Param("productId") Long productId, @Param("qty") int qty);
 }

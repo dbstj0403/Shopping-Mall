@@ -14,16 +14,26 @@ import java.util.*;
 public class FileStorageService {
 
     @Value("${file.base-upload}")
-    private String baseUpload; // 예: /var/app/uploads (운영 권장) 또는 src/main/resources/static/upload(로컬)
+    private String baseUpload; // 예: /var/app/uploads  (정적 매핑은 /static/upload/** 가정)
 
     private static final Set<String> ALLOWED_EXT  = Set.of("jpg","jpeg","png","webp");
     private static final Set<String> ALLOWED_MIME = Set.of("image/jpeg","image/png","image/webp");
-    private static final long MAX_ONE_SIZE = 512 * 1024; // 파일당 512KB
+    private static final long MAX_ONE_SIZE = 512 * 1024;       // 512KB/파일
+    private static final long MAX_TOTAL    = 3L * 1024 * 1024; // 3MB/요청 묶음
 
-    /** 단일 이미지 저장 (없으면 null) */
-    public String saveImage(MultipartFile file) throws IOException {
-        if (file == null || file.isEmpty()) return null;
-        validate(file);
+    /** 여러 이미지 저장: 합계 용량 검증 포함 */
+    public List<String> saveImages(List<MultipartFile> files) throws IOException {
+        if (files == null || files.isEmpty()) return List.of();
+
+        long total = 0;
+        for (MultipartFile f : files) {
+            if (f == null || f.isEmpty()) continue;
+            validateOne(f);
+            total += f.getSize();
+            if (total > MAX_TOTAL) {
+                throw new IllegalArgumentException("이미지 총 용량(3MB)을 초과했습니다.");
+            }
+        }
 
         LocalDate today = LocalDate.now();
         String y = String.valueOf(today.getYear());
@@ -33,32 +43,30 @@ public class FileStorageService {
         Path dir = Paths.get(baseUpload, y, m, d).toAbsolutePath().normalize();
         Files.createDirectories(dir);
 
-        String ext = extOf(file.getOriginalFilename());
-        String filename = UUID.randomUUID().toString().replace("-", "") + "." + ext;
-
-        file.transferTo(dir.resolve(filename).toFile());
-
-        // 공개 URL (정적 매핑: /static/upload/** 가정)
-        return "/static/upload/" + y + "/" + m + "/" + d + "/" + filename;
+        List<String> urls = new ArrayList<>();
+        for (MultipartFile file : files) {
+            if (file == null || file.isEmpty()) continue;
+            String ext = extOf(file.getOriginalFilename());
+            String filename = UUID.randomUUID().toString().replace("-", "") + "." + ext;
+            file.transferTo(dir.resolve(filename).toFile());
+            urls.add("/static/upload/" + y + "/" + m + "/" + d + "/" + filename);
+        }
+        return urls;
     }
 
-    /** 기존 URL 파일 삭제 (없으면 무시) */
-    public void deleteImageByUrl(String publicUrl) {
-        if (publicUrl == null || publicUrl.isBlank()) return;
-        Path p = resolveFromPublicUrl(publicUrl, baseUpload, "/static/upload/");
-        try { if (p != null && Files.exists(p)) Files.delete(p); } catch (Exception ignored) {}
-    }
-
-    /** 새 파일이 있으면 저장하고, 이전 파일은 삭제해서 교체. 새 파일이 없으면 기존 URL 유지 */
-    public String replaceImage(String currentUrl, MultipartFile newFile) throws IOException {
-        if (newFile == null || newFile.isEmpty()) return currentUrl; // 변경 없음
-        String newUrl = saveImage(newFile);
-        deleteImageByUrl(currentUrl);
-        return newUrl;
+    public void deleteByUrls(Collection<String> publicUrls) {
+        if (publicUrls == null) return;
+        for (String url : publicUrls) {
+            try {
+                Path p = resolveFromPublicUrl(url, baseUpload, "/static/upload/");
+                if (p != null && Files.exists(p)) Files.delete(p);
+            } catch (Exception ignored) {}
+        }
     }
 
     // ===== helpers =====
-    private void validate(MultipartFile f) {
+    private void validateOne(MultipartFile f) {
+        if (f == null || f.isEmpty()) throw new IllegalArgumentException("비어있는 파일입니다.");
         if (f.getSize() > MAX_ONE_SIZE) throw new IllegalArgumentException("이미지 최대 용량은 512KB입니다.");
         String ext = extOf(f.getOriginalFilename());
         if (!ALLOWED_EXT.contains(ext)) throw new IllegalArgumentException("허용 확장자: jpg, jpeg, png, webp");
@@ -79,7 +87,7 @@ public class FileStorageService {
     }
 
     private Path resolveFromPublicUrl(String publicUrl, String baseDir, String prefix) {
-        if (!publicUrl.startsWith(prefix)) return null;
+        if (publicUrl == null || !publicUrl.startsWith(prefix)) return null;
         String relative = publicUrl.substring(prefix.length()); // yyyy/MM/dd/filename.ext
         return Paths.get(baseDir, relative.split("/")).toAbsolutePath().normalize();
     }

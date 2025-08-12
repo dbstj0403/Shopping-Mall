@@ -1,3 +1,9 @@
 2025-08-12 09:50:43 | product | delete id=9 name='Opic'
 2025-08-12 10:17:10 | product | create id=13 name='키미 안토넬리' price=9999999 stock=1 image=null
 2025-08-12 13:16:42 | product | create id=14 name='말티쥬' price=60000 stock=999 image=/static/upload/2025/08/12/c48aff197fa94a869b7284ae8458157b.jpg
+2025-08-12 13:33:14 | product | create id=15 name='포메' price=50000 stock=45 images=2
+2025-08-12 13:35:37 | product | create id=16 name='example' price=50000 stock=4555 images=0
+2025-08-12 13:41:58 | product | create id=17 name='말티쥬' price=50000 stock=4555 images=2
+2025-08-12 13:42:25 | product | create id=18 name='포메라니안' price=45000 stock=999 images=1
+2025-08-12 13:42:53 | product | create id=19 name='자바스크립트 딥다이브' price=39000 stock=966 images=0
+2025-08-12 13:45:58 | product | update id=17 name:말티쥬->말티쥬 귀여워 price:50000->890000 stock:4555->25 (images replaced: true)

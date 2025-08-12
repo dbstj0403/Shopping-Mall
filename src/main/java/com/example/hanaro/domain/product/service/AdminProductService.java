@@ -4,6 +4,7 @@ import com.example.hanaro.domain.product.dto.ProductCreateRequestDto;
 import com.example.hanaro.domain.product.dto.ProductResponseDto;
 import com.example.hanaro.domain.product.dto.ProductUpdateRequestDto;
 import com.example.hanaro.domain.product.entity.Product;
+import com.example.hanaro.domain.product.entity.ProductImage;
 import com.example.hanaro.domain.product.repository.ProductRepository;
 import com.example.hanaro.global.error.CustomException;
 import com.example.hanaro.global.error.ErrorCode;
@@ -15,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -28,23 +30,22 @@ public class AdminProductService {
     private static final Logger bizProd = LoggerFactory.getLogger("business.product");
 
     @Transactional
-    public ProductResponseDto createProduct(ProductCreateRequestDto data, MultipartFile image) throws IOException {
-        String imageUrl = (image != null && !image.isEmpty())
-                ? fileStorageService.saveImage(image)
-                : null;
+    public ProductResponseDto createProduct(ProductCreateRequestDto data, List<MultipartFile> images) throws IOException {
+        Product p = Product.builder()
+                .name(data.getName())
+                .price(data.getPrice())
+                .description(data.getDescription())
+                .stock(Objects.requireNonNullElse(data.getStock(), 0))
+                .build();
 
-        Product saved = productRepository.save(
-                Product.builder()
-                        .name(data.getName())
-                        .price(data.getPrice())
-                        .description(data.getDescription())
-                        .imageUrl(imageUrl)
-                        .stock(Objects.requireNonNullElse(data.getStock(), 0))
-                        .build()
-        );
+        // 이미지 저장
+        List<String> urls = fileStorageService.saveImages(images);
+        p.setImages(buildImageEntities(urls));
 
-        bizProd.info("create id={} name='{}' price={} stock={} image={}",
-                saved.getId(), saved.getName(), saved.getPrice(), saved.getStock(), saved.getImageUrl());
+        Product saved = productRepository.save(p);
+
+        bizProd.info("create id={} name='{}' price={} stock={} images={}",
+                saved.getId(), saved.getName(), saved.getPrice(), saved.getStock(), saved.getImages().size());
 
         return ProductResponseDto.fromEntity(saved);
     }
@@ -59,13 +60,14 @@ public class AdminProductService {
     public void deleteProduct(Long id) {
         Product product = productRepository.findById(id)
                 .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND, "상품을 찾을 수 없습니다. id=" + id));
-        try { fileStorageService.deleteImageByUrl(product.getImageUrl()); } catch (Exception ignored) {}
+        // 실제 파일 삭제
+        fileStorageService.deleteByUrls(product.getImages().stream().map(ProductImage::getUrl).toList());
         productRepository.delete(product);
         bizProd.info("delete id={} name='{}'", product.getId(), product.getName());
     }
 
     @Transactional
-    public ProductResponseDto updateProduct(Long id, ProductUpdateRequestDto req, MultipartFile image) throws IOException {
+    public ProductResponseDto updateProduct(Long id, ProductUpdateRequestDto req, List<MultipartFile> newImages) throws IOException {
         Product p = productRepository.findById(id)
                 .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND, "상품을 찾을 수 없습니다. id=" + id));
 
@@ -78,17 +80,19 @@ public class AdminProductService {
         p.setDescription(req.getDescription());
         p.setStock(req.getStock());
 
-        if (image != null && !image.isEmpty()) {
-            String newUrl = fileStorageService.saveImage(image); // 내부에서 용량/확장자 검증
-            try { fileStorageService.deleteImageByUrl(p.getImageUrl()); } catch (Exception ignored) {}
-            p.setImageUrl(newUrl);
+        // 이미지 교체: 새 이미지가 1장 이상 들어오면 전량 교체(파일 삭제 후 재저장)
+        boolean hasNew = newImages != null && newImages.stream().anyMatch(f -> f != null && !f.isEmpty());
+        if (hasNew) {
+            // 기존 파일 삭제
+            fileStorageService.deleteByUrls(p.getImages().stream().map(ProductImage::getUrl).toList());
+            // 새로 저장
+            List<String> urls = fileStorageService.saveImages(newImages);
+            p.setImages(buildImageEntities(urls));
         }
 
-        bizProd.info("update id={} name:{}->{} price:{}->{} stock:{}->{}",
-                p.getId(), beforeName, p.getName(), beforePrice, p.getPrice(), beforeStock, p.getStock());
+        bizProd.info("update id={} name:{}->{} price:{}->{} stock:{}->{} (images replaced: {})",
+                p.getId(), beforeName, p.getName(), beforePrice, p.getPrice(), beforeStock, p.getStock(), hasNew);
 
-
-        // 변경감지로 flush
         return ProductResponseDto.fromEntity(p);
     }
 
@@ -96,10 +100,24 @@ public class AdminProductService {
     public ProductResponseDto updateStock(Long id, int newStock) {
         Product p = productRepository.findById(id)
                 .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND, "상품을 찾을 수 없습니다. id=" + id));
-        p.setStock(newStock);
         int before = p.getStock();
+        p.setStock(newStock);
         bizProd.info("stock-update id={} before={} after={}", p.getId(), before, newStock);
-
         return ProductResponseDto.fromEntity(p);
+    }
+
+    // helper
+    private List<ProductImage> buildImageEntities(List<String> urls) {
+        List<ProductImage> list = new ArrayList<>();
+        int i = 0;
+        for (String url : urls) {
+            list.add(ProductImage.builder()
+                    .url(url)
+                    .orderNo(i)
+                    .isPrimary(i == 0) // 첫 번째를 대표로
+                    .build());
+            i++;
+        }
+        return list;
     }
 }
