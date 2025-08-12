@@ -1,3 +1,6 @@
 2025-08-12 09:57:22 | order | create:start userId=9 cartId=3
 2025-08-12 09:57:22 | order | create:success orderId=11 userId=9 items=3 totalQty=14 totalAmt=4190900
 2025-08-12 09:57:22 | order | cart:cleared userId=9 cartId=3
+2025-08-12 13:13:21 | order | create:start userId=8 cartId=4
+2025-08-12 13:13:21 | order | create:success orderId=13 userId=8 items=1 totalQty=2 totalAmt=198000
+2025-08-12 13:13:21 | order | cart:cleared userId=8 cartId=4

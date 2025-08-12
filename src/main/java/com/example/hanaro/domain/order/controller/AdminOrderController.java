@@ -19,7 +19,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/admin/orders")
 @RequiredArgsConstructor
-@Tag(name = "ADMIN ORDER API", description = "관리자용 주문 목록 조회")
+@Tag(name = "ADMIN ORDER API", description = "관리자용 주문 조회 API입니다.")
 public class AdminOrderController {
 
     private final OrderService adminOrderService;
