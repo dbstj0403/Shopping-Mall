@@ -55,10 +55,10 @@ public class SwaggerConfig {
     }
 
     @Bean
-    public GroupedOpenApi systemApi() {
+    public GroupedOpenApi actuatorApi() {
         return GroupedOpenApi.builder()
-                .group("SYSTEM")
-                .pathsToMatch("/health")
+                .group("ACTUATOR")
+                .pathsToMatch("/actuator/**")
                 .build();
     }
 }

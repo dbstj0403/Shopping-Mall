@@ -27,7 +27,8 @@ springdoc:
     path: /swagger-ui.html
   api-docs:
     path: /v3/api-docs
-    paths-to-match: /api/**, /health
+    paths-to-match: /api/**, /health, /actuator/**
+  show-actuator: true
 
 jwt:
   secret: ${JWT_SECRET:please-change-this-very-long-secret-256bits}
@@ -37,7 +38,13 @@ management:
   endpoints:
     web:
       base-path: /actuator
+      exposure:
+        include: health, info, beans, env, metrics, mappings
   endpoint:
     health:
       probes.enabled: true
+      show-details: always
+      probes:
+        enabled: true
+
 

@@ -15,7 +15,6 @@ import java.lang.annotation.*;
       {
         "status": 200,
         "message": "상품이 삭제되었습니다.",
-        "data": null
       }
       """))),
         @ApiResponse(responseCode = "401", description = "인증 필요",

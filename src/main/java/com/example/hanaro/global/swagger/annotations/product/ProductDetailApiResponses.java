@@ -23,6 +23,7 @@ import java.lang.annotation.Target;
                   "status": 200,
                   "message": "상품 상세 조회 성공",
                   "data": {
+                    "id": 1,
                     "name": "샘플 상품",
                     "price": 15000,
                     "description": "이 상품은 예시 상품입니다."
