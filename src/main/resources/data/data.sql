@@ -32,7 +32,7 @@ CREATE TABLE `cart_items` (
   KEY `FKl7je3auqyq1raj52qmwrgih8x` (`product_id`),
   CONSTRAINT `FKl7je3auqyq1raj52qmwrgih8x` FOREIGN KEY (`product_id`) REFERENCES `product` (`id`),
   CONSTRAINT `FKpcttvuq4mxppo8sxggjtn5i2c` FOREIGN KEY (`cart_id`) REFERENCES `carts` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=29 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=33 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -57,7 +57,7 @@ CREATE TABLE `carts` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `uk_cart_user` (`user_id`),
   CONSTRAINT `FKb5o626f86h46m4s7ms6ginnop` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -66,7 +66,7 @@ CREATE TABLE `carts` (
 
 LOCK TABLES `carts` WRITE;
 /*!40000 ALTER TABLE `carts` DISABLE KEYS */;
-INSERT INTO `carts` VALUES (5,1),(6,7),(7,8),(8,9),(9,12);
+INSERT INTO `carts` VALUES (5,1),(6,7),(7,8),(8,9),(9,12),(10,14);
 /*!40000 ALTER TABLE `carts` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -116,7 +116,7 @@ CREATE TABLE `order_items` (
   KEY `FKlf6f9q956mt144wiv6p1yko16` (`product_id`),
   CONSTRAINT `FKbioxgbv59vetrxe0ejfubep1w` FOREIGN KEY (`order_id`) REFERENCES `orders` (`id`),
   CONSTRAINT `FKlf6f9q956mt144wiv6p1yko16` FOREIGN KEY (`product_id`) REFERENCES `product` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=43 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=45 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -125,7 +125,7 @@ CREATE TABLE `order_items` (
 
 LOCK TABLES `order_items` WRITE;
 /*!40000 ALTER TABLE `order_items` DISABLE KEYS */;
-INSERT INTO `order_items` VALUES (26,90000,'포메라니안',2,45000,14,18),(27,78000,'자바스크립트 딥다이브',2,39000,14,19),(28,400000,'에어팟',2,200000,14,20),(29,1780000,'말티쥬 귀여워',2,890000,15,17),(30,46666,'웰시코기',2,23333,15,21),(31,1000000,'에어팟',5,200000,16,20),(32,1780000,'말티쥬 귀여워',2,890000,17,17),(33,90000,'포메라니안',2,45000,27,18),(34,200000,'에어팟',1,200000,27,20),(35,117000,'자바스크립트 딥다이브',3,39000,28,19),(36,890000,'말티쥬 귀여워',1,890000,29,17),(37,46666,'웰시코기',2,23333,29,21),(38,90000,'포메라니안',2,45000,29,18),(39,400000,'에어팟',2,200000,29,20),(40,1780000,'말티쥬 귀여워',2,890000,31,17),(41,46666,'웰시코기',2,23333,31,21),(42,8888,'시바견',2,4444,32,22);
+INSERT INTO `order_items` VALUES (26,90000,'포메라니안',2,45000,14,18),(27,78000,'자바스크립트 딥다이브',2,39000,14,19),(28,400000,'에어팟',2,200000,14,20),(29,1780000,'말티쥬 귀여워',2,890000,15,17),(30,46666,'웰시코기',2,23333,15,21),(31,1000000,'에어팟',5,200000,16,20),(32,1780000,'말티쥬 귀여워',2,890000,17,17),(33,90000,'포메라니안',2,45000,27,18),(34,200000,'에어팟',1,200000,27,20),(35,117000,'자바스크립트 딥다이브',3,39000,28,19),(36,890000,'말티쥬 귀여워',1,890000,29,17),(37,46666,'웰시코기',2,23333,29,21),(38,90000,'포메라니안',2,45000,29,18),(39,400000,'에어팟',2,200000,29,20),(40,1780000,'말티쥬 귀여워',2,890000,31,17),(41,46666,'웰시코기',2,23333,31,21),(42,8888,'시바견',2,4444,32,22),(43,117000,'자바스크립트 딥다이브',3,39000,33,19),(44,2670000,'오리너구리',3,890000,33,23);
 /*!40000 ALTER TABLE `order_items` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -147,7 +147,7 @@ CREATE TABLE `orders` (
   PRIMARY KEY (`id`),
   KEY `FK32ql8ubntj5uh44ph9659tiih` (`user_id`),
   CONSTRAINT `FK32ql8ubntj5uh44ph9659tiih` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=33 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=34 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -156,7 +156,7 @@ CREATE TABLE `orders` (
 
 LOCK TABLES `orders` WRITE;
 /*!40000 ALTER TABLE `orders` DISABLE KEYS */;
-INSERT INTO `orders` VALUES (14,'2025-08-12 14:00:12.273844','DELIVERED','2025-08-12 15:40:20.009943',568000,6,1),(15,'2025-08-12 14:01:20.507479','DELIVERED','2025-08-12 15:40:20.009943',1826666,4,7),(16,'2025-08-12 14:02:43.681083','DELIVERED','2025-08-12 15:40:20.009943',1000000,5,8),(17,'2025-08-12 14:12:18.235521','DELIVERED','2025-08-12 15:40:20.009943',1780000,2,9),(24,'2025-08-10 10:15:00.000000','DELIVERED','2025-08-10 10:15:00.000000',90000,2,1),(25,'2025-08-10 14:40:00.000000','DELIVERED','2025-08-10 14:40:00.000000',1780000,3,7),(26,'2025-08-10 19:05:00.000000','DELIVERED','2025-08-10 19:05:00.000000',239000,4,8),(27,'2025-08-10 10:15:00.000000','DELIVERED','2025-08-10 10:15:00.000000',290000,3,1),(28,'2025-08-10 11:05:00.000000','DELIVERED','2025-08-10 11:05:00.000000',117000,3,7),(29,'2025-08-10 14:40:00.000000','DELIVERED','2025-08-10 14:40:00.000000',936666,3,8),(30,'2025-08-11 10:10:00.000000','DELIVERED','2025-08-11 10:10:00.000000',290000,4,1),(31,'2025-08-11 11:15:00.000000','DELIVERED','2025-08-11 11:15:00.000000',929333,4,7),(32,'2025-08-12 15:51:32.071615','PREPARING_SHIPMENT','2025-08-12 15:57:00.049775',8888,2,12);
+INSERT INTO `orders` VALUES (14,'2025-08-12 14:00:12.273844','DELIVERED','2025-08-12 15:40:20.009943',568000,6,1),(15,'2025-08-12 14:01:20.507479','DELIVERED','2025-08-12 15:40:20.009943',1826666,4,7),(16,'2025-08-12 14:02:43.681083','DELIVERED','2025-08-12 15:40:20.009943',1000000,5,8),(17,'2025-08-12 14:12:18.235521','DELIVERED','2025-08-12 15:40:20.009943',1780000,2,9),(24,'2025-08-10 10:15:00.000000','DELIVERED','2025-08-10 10:15:00.000000',90000,2,1),(25,'2025-08-10 14:40:00.000000','DELIVERED','2025-08-10 14:40:00.000000',1780000,3,7),(26,'2025-08-10 19:05:00.000000','DELIVERED','2025-08-10 19:05:00.000000',239000,4,8),(27,'2025-08-10 10:15:00.000000','DELIVERED','2025-08-10 10:15:00.000000',290000,3,1),(28,'2025-08-10 11:05:00.000000','DELIVERED','2025-08-10 11:05:00.000000',117000,3,7),(29,'2025-08-10 14:40:00.000000','DELIVERED','2025-08-10 14:40:00.000000',936666,3,8),(30,'2025-08-11 10:10:00.000000','DELIVERED','2025-08-11 10:10:00.000000',290000,4,1),(31,'2025-08-11 11:15:00.000000','DELIVERED','2025-08-11 11:15:00.000000',929333,4,7),(32,'2025-08-12 15:51:32.071615','IN_TRANSIT','2025-08-12 16:12:10.017767',8888,2,12),(33,'2025-08-12 16:57:23.120716','PAYMENT_COMPLETED','2025-08-12 16:57:23.119554',2787000,6,14);
 /*!40000 ALTER TABLE `orders` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -175,7 +175,7 @@ CREATE TABLE `product` (
   `stock` int NOT NULL DEFAULT '0',
   `version` bigint DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=23 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=24 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -184,7 +184,7 @@ CREATE TABLE `product` (
 
 LOCK TABLES `product` WRITE;
 /*!40000 ALTER TABLE `product` DISABLE KEYS */;
-INSERT INTO `product` VALUES (17,'말티 기여워','말티쥬 귀여워',890000,21,1),(18,'망망','포메라니안',45000,997,0),(19,'개발자용 책','자바스크립트 딥다이브',39000,964,0),(20,'Apple','에어팟',200000,26,0),(21,'귀엽','웰시코기',23333,5664,0),(22,'일본 강아지','시바견',4444,55553,0);
+INSERT INTO `product` VALUES (17,'말티 기여워','말티쥬 귀여워',890000,500,2),(18,'망망','포메라니안',45000,997,0),(19,'개발자용 책','자바스크립트 딥다이브',39000,961,0),(20,'Apple','에어팟',200000,26,0),(21,'귀엽','웰시코기',23333,5664,0),(22,'일본 강아지','시바견',4444,55553,0),(23,'오리 너구링!!!!','오리너구리',890000,697,1);
 /*!40000 ALTER TABLE `product` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -232,7 +232,7 @@ CREATE TABLE `product_image` (
   PRIMARY KEY (`id`),
   KEY `idx_product_order` (`product_id`,`order_no`),
   CONSTRAINT `FK6oo0cvcdtb6qmwsga468uuukk` FOREIGN KEY (`product_id`) REFERENCES `product` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -241,7 +241,7 @@ CREATE TABLE `product_image` (
 
 LOCK TABLES `product_image` WRITE;
 /*!40000 ALTER TABLE `product_image` DISABLE KEYS */;
-INSERT INTO `product_image` VALUES (5,_binary '',0,'/static/upload/2025/08/12/6b195aded3cd493baa795915284fc1b3.jpg',18),(6,_binary '',0,'/static/upload/2025/08/12/ff0eb3e8d2d04914bb06a261dc9ccf07.jpeg',17),(7,_binary '',0,'/static/upload/2025/08/12/67eb8ca54428409abca3aeaa6f2fe7c7.jpeg',20),(8,_binary '',0,'/static/upload/2025/08/12/c275691ca2dc451eb4025a854ef0067e.jpeg',21),(9,_binary '',0,'/static/upload/2025/08/12/f8d89ee04d4f4a5591e780e6e20b70e1.jpeg',22);
+INSERT INTO `product_image` VALUES (5,_binary '',0,'/static/upload/2025/08/12/6b195aded3cd493baa795915284fc1b3.jpg',18),(6,_binary '',0,'/static/upload/2025/08/12/ff0eb3e8d2d04914bb06a261dc9ccf07.jpeg',17),(7,_binary '',0,'/static/upload/2025/08/12/67eb8ca54428409abca3aeaa6f2fe7c7.jpeg',20),(8,_binary '',0,'/static/upload/2025/08/12/c275691ca2dc451eb4025a854ef0067e.jpeg',21),(9,_binary '',0,'/static/upload/2025/08/12/f8d89ee04d4f4a5591e780e6e20b70e1.jpeg',22),(12,_binary '',0,'/static/upload/2025/08/12/c9e8853ad71f42c5a22024095f3b7e72.png',23),(13,_binary '\0',1,'/static/upload/2025/08/12/56546c14e0ae4505b526997dc4659c55.jpeg',23);
 /*!40000 ALTER TABLE `product_image` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -260,7 +260,7 @@ CREATE TABLE `users` (
   `role` enum('ROLE_ADMIN','ROLE_USER') NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `UK6dotkott2kjsp8vw4d0m25fb7` (`email`)
-) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -269,7 +269,7 @@ CREATE TABLE `users` (
 
 LOCK TABLES `users` WRITE;
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
-INSERT INTO `users` VALUES (1,'hanaro@email.com','별돌이','$2a$10$knkxafjX4hqZ0NpsNPUiT.CZnmbyFoNugDNnSHeelCl.31.mU90XK','ROLE_USER'),(6,'admin@email.com','별송이','$2a$10$L2ZvLAlCjXhq4b253VCXAObyyCfDCq4cdvzeUyqiPDRx2PUhDKBha','ROLE_ADMIN'),(7,'hanaro2@email.com','별벗','$2a$10$p2lew9J/QQGIjS34nr3ia.1HcRyxgmfqb7bvjExNykZdasdFukkkG','ROLE_USER'),(8,'hanaro3@email.com','별봄이','$2a$10$XFsHDxzYaZfH1Sur0kKGLuei1vNOIY4silFkxJj50gNwHR6aQQrHS','ROLE_USER'),(9,'hanaro4@email.com','별프로','$2a$10$6b4hAjYeMXFH3wwZn2fFkOwcjQfc6SSiHt0AUTzQiouJNcRQOfpU.','ROLE_USER'),(11,'hanaro6@email.com','별누리','$2a$10$cncm31X49a5x4wTSAQp8I.8nHJpUpESV8Vbmvbd4NGW7BjtsPvS0C','ROLE_USER'),(12,'hanaro7@email.com','별별이','$2a$10$l3BmipCYxxC0B.MYQaj0qeWIR2HuboGxfZpl1/XlCtdQoQ8xXQhjy','ROLE_USER'),(13,'hana@email.com','hana','$2a$10$xR.sRN0w1pOw5yLwRjlNJutzVioR63TqC5gylA1aUbpz0rQ0hlERa','ROLE_USER');
+INSERT INTO `users` VALUES (1,'hanaro@email.com','별돌이','$2a$10$knkxafjX4hqZ0NpsNPUiT.CZnmbyFoNugDNnSHeelCl.31.mU90XK','ROLE_USER'),(6,'admin@email.com','별송이','$2a$10$L2ZvLAlCjXhq4b253VCXAObyyCfDCq4cdvzeUyqiPDRx2PUhDKBha','ROLE_ADMIN'),(7,'hanaro2@email.com','별벗','$2a$10$p2lew9J/QQGIjS34nr3ia.1HcRyxgmfqb7bvjExNykZdasdFukkkG','ROLE_USER'),(8,'hanaro3@email.com','별봄이','$2a$10$XFsHDxzYaZfH1Sur0kKGLuei1vNOIY4silFkxJj50gNwHR6aQQrHS','ROLE_USER'),(9,'hanaro4@email.com','별프로','$2a$10$6b4hAjYeMXFH3wwZn2fFkOwcjQfc6SSiHt0AUTzQiouJNcRQOfpU.','ROLE_USER'),(12,'hanaro7@email.com','별별이','$2a$10$l3BmipCYxxC0B.MYQaj0qeWIR2HuboGxfZpl1/XlCtdQoQ8xXQhjy','ROLE_USER'),(13,'hana@email.com','hana','$2a$10$xR.sRN0w1pOw5yLwRjlNJutzVioR63TqC5gylA1aUbpz0rQ0hlERa','ROLE_USER'),(14,'test@email.com','test','$2a$10$VlNibFD0TEx5.gUn6hi5KuoQBpy5s667ntpxhXaBNHrXR4n4ucH7e','ROLE_USER');
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -282,4 +282,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-08-12 15:57:51
+-- Dump completed on 2025-08-12 17:00:46
