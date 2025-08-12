@@ -117,7 +117,7 @@ chore: 코드 수정, 내부 파일 수정
       재고 수정 완료 → INFO
       ```
 
-      <img width="794" height="40" alt="Image" src="https://github.com/user-attachments/assets/4ab2a978-d709-4326-a825-9cd50c1f9907" />
+      <img width="959" height="191" alt="Image" src="https://github.com/user-attachments/assets/360563ad-5a16-46ef-87e0-91ff150a9a6e" />
 
 - `Validation`
     - 회원가입, 상품 등록 시 입력 데이터의 유효성을 검증합니다.
