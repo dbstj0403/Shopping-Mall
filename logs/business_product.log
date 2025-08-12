@@ -7,3 +7,5 @@
 2025-08-12 13:42:25 | product | create id=18 name='포메라니안' price=45000 stock=999 images=1
 2025-08-12 13:42:53 | product | create id=19 name='자바스크립트 딥다이브' price=39000 stock=966 images=0
 2025-08-12 13:45:58 | product | update id=17 name:말티쥬->말티쥬 귀여워 price:50000->890000 stock:4555->25 (images replaced: true)
+2025-08-12 13:48:01 | product | create id=20 name='에어팟' price=200000 stock=33 images=1
+2025-08-12 13:49:50 | product | create id=21 name='웰시코기' price=23333 stock=5666 images=1
