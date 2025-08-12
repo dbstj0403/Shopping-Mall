@@ -31,9 +31,9 @@ chore: 코드 수정, 내부 파일 수정
   -- 권한 적용
   FLUSH PRIVILEGES;
   ```
-- test 폴더의 SqlImportTest를 실행해 주세요.
-    - 정상적으로 데이터 삽입이 되지 않을 경우 IntelliJ에 hanarodb를 연결하고 hanaro 유저로 연결해 주세요.
-- Spring Boot 앱을 작동시키기 위해 HanaroApplication을 실행해 주세요.
+- DB 연결을 위해 앱을 한번 실행하고, test 폴더의 SqlImportTest를 실행해 주세요.
+    - 정상적으로 데이터 삽입이 되지 않을 경우 IntelliJ에 hanarodb를 직접 연결하고 hanaro 유저로 접속해 주세요.
+- 이후 필요할 경우 Spring Boot 앱을 작동시키기 위해 다시 HanaroApplication을 실행해 주세요.
 
 ### ⚙️ 테스트 계정
 - `관리자`
