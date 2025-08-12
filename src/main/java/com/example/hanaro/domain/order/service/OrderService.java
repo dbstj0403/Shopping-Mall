@@ -132,7 +132,9 @@ public class OrderService {
     public OrderListItemDto getById(Long orderId) {
         return orderRepository.findById(orderId)
                 .map(OrderListItemDto::from)
-                .orElseThrow(() -> new IllegalArgumentException("주문을 찾을 수 없습니다: " + orderId));
+                .orElseThrow(() -> new CustomException(
+                        ErrorCode.ORDER_NOT_FOUND, "주문을 찾을 수 없습니다: " + orderId
+                ));
     }
 
     @Transactional(readOnly = true)
