@@ -149,4 +149,4 @@ chore: 코드 수정, 내부 파일 수정
 
 
 ### ✍🏻 ERD
-<img width="757" height="747" alt="Image" src="https://github.com/user-attachments/assets/fdca8db8-c7c8-48e7-aedf-708d793264b1" />
+<img width="858" height="686" alt="Image" src="https://github.com/user-attachments/assets/48ba2f76-61c4-4958-8668-05c16fee5f01" />
