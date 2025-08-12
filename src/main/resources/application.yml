@@ -12,7 +12,7 @@ spring:
       max-request-size: 3MB # 전체 요청 3MB
 
   datasource:
-    url: jdbc:mysql://localhost:3306/hanarodb
+    url: jdbc:mysql://localhost:3306/hanarodb2
     username: hanaro
     password: 12345678
     driver-class-name: com.mysql.cj.jdbc.Driver
