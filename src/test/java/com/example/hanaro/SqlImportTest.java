@@ -19,7 +19,7 @@ public class SqlImportTest {
     @Test
     void importBackupSql() throws Exception {
         // SQL 파일 경로 지정
-        Path sqlPath = Path.of("src/main/resources/static/data/hanarodb_backup.sql");
+        Path sqlPath = Path.of("src/main/resources/data/data.sql");
 
         // 파일 전체 읽기 (UTF-8 가정)
         String sqlContent = Files.readString(sqlPath);
