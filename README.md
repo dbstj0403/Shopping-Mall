@@ -18,7 +18,22 @@ chore: 코드 수정, 내부 파일 수정
 ```
 
 ### ⭐️ 실행 가이드
-- 
+- 로컬에 hanaro 데이터베이스를 만들어 주세요.
+    - `create database hanaro;`
+- 데이터베이스에 접속하기 위한 유저를 만들고, 권한을 부여해 주세요.
+  ```
+  -- 유저 생성
+  CREATE USER IF NOT EXISTS 'hanaro'@'%' IDENTIFIED BY '12345678';
+
+  -- 권한 부여
+  GRANT ALL PRIVILEGES ON hanarodb.* TO 'hanaro'@'%';
+
+  -- 권한 적용
+  FLUSH PRIVILEGES;
+  ```
+- test 폴더의 SqlImportTest를 실행해 주세요.
+    - 정상적으로 데이터 삽입이 되지 않을 경우 IntelliJ에 hanarodb를 연결하고 hanaro 유저로 연결해 주세요.
+- Spring Boot 앱을 작동시키기 위해 HanaroApplication을 실행해 주세요.
 
 ### ⚙️ 테스트 계정
 - `관리자`
@@ -67,9 +82,9 @@ chore: 코드 수정, 내부 파일 수정
 - `배치 Job`
     - 매일 자정에 일별 매출 통계를 저장합니다. 8/11 자정에 매출 집계 코드가 작동되면 8/10 주문들의 매출 통계를 작성해 daily_sales_summary 테이블에 저장합니다. Column들은 날짜, 총 매출, 총 주문 수, 집계 날짜로 이루어져 있습니다. (사진은 테스트용으로 임의의 시간에 매출을 집계)
 
-      <img width="243" height="53" alt="Image" src="https://github.com/user-attachments/assets/42dcbc78-b1c0-4bda-a28b-1d780f41dce7" />
-
       <img width="995" height="45" alt="Image" src="https://github.com/user-attachments/assets/ada337d7-1c97-40a1-b1db-620d717e6831" />
+
+      <img width="243" height="53" alt="Image" src="https://github.com/user-attachments/assets/42dcbc78-b1c0-4bda-a28b-1d780f41dce7" />
 
     - 매일 자정 일별 매출 통계를 집계함과 동시에, 상품별 매출 통계 또한 product_daily_sales 테이블에 저장합니다. Column은 날짜, 상품 아이디, 총 매출 금액, 집계 날짜로 이루어져 있습니다.
 
@@ -82,10 +97,25 @@ chore: 코드 수정, 내부 파일 수정
 
       <img width="368" height="105" alt="Image" src="https://github.com/user-attachments/assets/5a766572-0c29-432b-9c32-5145d2e55206" />
     - business_order 로그 파일 예시
+    - 로그 발생 플로우
+      ```
+      주문 시작 → INFO
+      장바구니 비었으면 → WARN + 주문 중단
+      재고 부족이면 → WARN + 주문 중단
+      정상 완료 시 → INFO (주문 성공)
+      이어서 장바구니 비움 → INFO
+      ```
 
       <img width="856" height="128" alt="Image" src="https://github.com/user-attachments/assets/4e9ef5de-1e64-4617-8aa0-1c6ac9288898" />
 
     - business_product 로그 파일 예시
+    - 로그 발생 플로우
+      ```
+      상품 생성 완료 → INFO
+      상품 삭제 완료 → INFO
+      상품 정보 수정 완료 → INFO (변경 전/후 값 + 이미지 교체 여부 포함)
+      재고 수정 완료 → INFO
+      ```
 
       <img width="794" height="40" alt="Image" src="https://github.com/user-attachments/assets/4ab2a978-d709-4326-a825-9cd50c1f9907" />
 
