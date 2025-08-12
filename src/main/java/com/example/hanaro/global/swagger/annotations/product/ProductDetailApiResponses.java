@@ -23,15 +23,20 @@ import java.lang.annotation.Target;
                   "status": 200,
                   "message": "상품 상세 조회 성공",
                   "data": {
-                    "id": 1,
-                    "name": "샘플 상품",
-                    "price": 15000,
-                    "description": "이 상품은 예시 상품입니다."
+                    "id": 22,
+                    "name": "시바견",
+                    "price": 4444,
+                    "description": "일본 강아지",
+                    "stock": 55555,
+                    "images": [
+                      "/static/upload/2025/08/12/f8d89ee04d4f4a5591e780e6e20b70e1.jpeg",
+                      "/static/upload/2025/08/12/abc123.jpeg"
+                    ]
                   }
                 }
             """))),
 
-        // 404 Not Found
+        // 404 Not Found (data 필드 없음)
         @ApiResponse(responseCode = "404", description = "상품 없음",
                 content = @Content(schema = @Schema(implementation = ApiResponseErrorDoc.class),
                         mediaType = "application/json",
@@ -43,9 +48,10 @@ import java.lang.annotation.Target;
                 }
             """))),
 
-        // 500 Internal Server Error
+        // 500 Internal Server Error (data 필드 없음)
         @ApiResponse(responseCode = "500", description = "서버 내부 오류",
                 content = @Content(schema = @Schema(implementation = ApiResponseErrorDoc.class),
+                        mediaType = "application/json",
                         examples = @ExampleObject(value = """
                 {
                   "status": 500,
