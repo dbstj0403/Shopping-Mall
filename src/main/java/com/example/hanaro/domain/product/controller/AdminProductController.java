@@ -49,7 +49,7 @@ public class AdminProductController {
 
     @Operation(
             summary = "상품 등록 (이미지 0 또는 1장)",
-            description = "상품 정보(JSON)와 단일 이미지를 업로드합니다. 이미지가 없으면 DB에는 null로 저장됩니다."
+            description = "상품 정보(JSON)와 단일 이미지를 업로드합니다. 이미지가 없으면 DB에는 기본 이미지 경로로 저장됩니다."
     )
     @RequestBody(
             required = true,
