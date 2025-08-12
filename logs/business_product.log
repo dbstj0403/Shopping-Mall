@@ -11,3 +11,4 @@
 2025-08-12 13:49:50 | product | create id=21 name='웰시코기' price=23333 stock=5666 images=1
 2025-08-12 14:45:47 | product | create id=22 name='시바견' price=4444 stock=55555 images=1
 2025-08-12 16:07:35 | product | create id=23 name='오리너구리' price=55444 stock=999 images=2
+2025-08-12 16:20:18 | product | delete-all-images id=23 removedCount=2

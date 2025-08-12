@@ -120,4 +120,26 @@ public class AdminProductService {
         }
         return list;
     }
+
+    @Transactional
+    public ProductResponseDto deleteAllImages(Long id) {
+        Product p = productRepository.findWithImagesById(id)
+                .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND, "상품을 찾을 수 없습니다. id=" + id));
+
+        // 현재 이미지 URL 수집
+        List<String> urls = p.getImages().stream().map(ProductImage::getUrl).toList();
+
+        // 스토리지 파일 삭제 (이미 없더라도 idempotent 하게 처리한다고 가정)
+        if (!urls.isEmpty()) {
+            fileStorageService.deleteByUrls(urls);
+        }
+
+        // DB 관계 제거 (orphanRemoval=true 이므로 이미지 레코드도 삭제됨)
+        p.getImages().clear();
+
+        bizProd.info("delete-all-images id={} removedCount={}", p.getId(), urls.size());
+
+        // 빈 이미지 리스트가 반영된 현재 상태 반환
+        return ProductResponseDto.fromEntity(p);
+    }
 }

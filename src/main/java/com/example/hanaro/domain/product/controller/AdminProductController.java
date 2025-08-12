@@ -4,6 +4,7 @@ import com.example.hanaro.domain.product.dto.*;
 import com.example.hanaro.domain.product.service.AdminProductService;
 import com.example.hanaro.global.payload.response.ApiResponseDto;
 import com.example.hanaro.global.swagger.annotations.product.*;
+import com.example.hanaro.global.swagger.annotations.statistics.AdminStatsDailyListApiResponses;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.*;
 import io.swagger.v3.oas.annotations.parameters.RequestBody;
@@ -147,5 +148,19 @@ public class AdminProductController {
     ) {
         ProductResponseDto updated = adminProductService.updateStock(id, req.stock());
         return ResponseEntity.ok(ApiResponseDto.ok("재고가 수정되었습니다.", updated));
+    }
+
+    @Operation(
+            summary = "상품 이미지 전체 삭제",
+            description = "해당 상품의 모든 이미지를 제거합니다."
+    )
+    @AdminStatsDailyListApiResponses
+    @PreAuthorize("hasRole('ADMIN')")
+    @DeleteMapping(value = "/{id}/images", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<ApiResponseDto<ProductResponseDto>> deleteAllImages(
+            @PathVariable("id") @Positive(message = "유효한 상품 ID여야 합니다.") Long id
+    ) {
+        ProductResponseDto updated = adminProductService.deleteAllImages(id);
+        return ResponseEntity.ok(ApiResponseDto.ok("상품 이미지가 모두 삭제되었습니다.", updated));
     }
 }
