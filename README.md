@@ -17,11 +17,105 @@ test: 테스트 코드 추가, 테스트 코드 리팩토링
 chore: 코드 수정, 내부 파일 수정
 ```
 
+### ⭐️ 실행 가이드
+- 
+
+### ⚙️ 테스트 계정
+- `관리자`
+    - email : admin@email.com
+    - password : 12345678
+- `사용자`
+    - email : hanaro@email.com
+    - password : 12345678
+    - hanaro2, hanaro3, hanaro4... 여러 사용자가 존재하며, 비밀번호는 모두 12345678로 같습니다.
+
 ### 🗂️ Swagger
 - 해당 프로젝트의 다양한 API를 직접 테스트해 볼 수 있습니다.
     - http://localhost:8080/swagger-ui/index.html
 - `사용자 / 관리자 API 구분`
-    - Swagger 문서 상단 탭을 눌러 사용자 / 관리자 / 시스템 API를 각각 확인할 수 있습니다.
+    - Swagger 문서 상단 탭을 눌러 사용자 / 관리자 / Actuator API를 각각 확인할 수 있습니다.
 
-      <img width="1161" height="233" alt="Image" src="https://github.com/user-attachments/assets/8f25b973-0db7-4a94-9c5f-3411b00d2384" />
-    
+      <img width="1167" height="237" alt="Image" src="https://github.com/user-attachments/assets/39a6ed83-4362-499b-8602-9e790e34f850" />
+
+
+### 🚀 기능 명세
+- `인증 / 인가`
+    - Spring Security, jwt 토큰을 이용한 회원가입 및 로그인 기능 제공
+
+      <img width="1123" height="432" alt="Image" src="https://github.com/user-attachments/assets/e4a208bb-b590-4d61-80b2-30430171a502" />
+
+- `파일 업로드`
+    - 관리자가 상품 등록 시 사진을 함께 등록할 경우 /resources/static/upload 파일에 날짜별 폴더링과 함께 업로드됩니다. 	상품 이미지를 등록하지 않을 경우 DB에는 이미지 경로가 null로 저장되고, 조회할 때 null인 값은 origin 폴더의 기본 이미지 경로로 매핑되어 반환됩니다.
+
+      <img width="504" height="325" alt="Image" src="https://github.com/user-attachments/assets/32dacd49-0665-401e-88db-d0bdb3444ec9" />
+
+      <img width="1200" height="209" alt="Image" src="https://github.com/user-attachments/assets/7e1eb826-c6ab-47fb-aec3-45cd87fee90b" />
+
+- `스케쥴링`
+    - 결제 완료, 배송 준비, 배송 중, 배송 완료 상태를 enum으로 관리하고, 생성된 주문을 스케쥴러를 통해 각각의 상태를 순차적으로 5분, 15분, 1시간 간격으로 변환합니다.
+      ```
+      public enum OrderStatus {
+      PAYMENT_COMPLETED,   // 결제 완료
+      PREPARING_SHIPMENT,  // 배송 준비
+      IN_TRANSIT,          // 배송 중
+      DELIVERED           // 배송 완료
+      }
+      ```
+
+      <img width="886" height="211" alt="Image" src="https://github.com/user-attachments/assets/55842ff0-9bf9-453f-9b09-2b561877bff3" />
+
+- `배치 Job`
+    - 매일 자정에 일별 매출 통계를 저장합니다. 8/11 자정에 매출 집계 코드가 작동되면 8/10 주문들의 매출 통계를 작성해 daily_sales_summary 테이블에 저장합니다. Column들은 날짜, 총 매출, 총 주문 수, 집계 날짜로 이루어져 있습니다. (사진은 테스트용으로 임의의 시간에 매출을 집계)
+
+      <img width="243" height="53" alt="Image" src="https://github.com/user-attachments/assets/42dcbc78-b1c0-4bda-a28b-1d780f41dce7" />
+
+      <img width="995" height="45" alt="Image" src="https://github.com/user-attachments/assets/ada337d7-1c97-40a1-b1db-620d717e6831" />
+
+    - 매일 자정 일별 매출 통계를 집계함과 동시에, 상품별 매출 통계 또한 product_daily_sales 테이블에 저장합니다. Column은 날짜, 상품 아이디, 총 매출 금액, 집계 날짜로 이루어져 있습니다.
+
+      <img width="552" height="164" alt="Image" src="https://github.com/user-attachments/assets/12a2e557-219e-4a18-a0cb-0bcd493aca02" />
+
+
+- `로깅`
+    - 상품 관리, 주문 관련 이벤트가 발생할 때마다 로그를 발생시킵니다.
+    - 주문 관련 로그는 business_order 파일에, 상품 관련 로그는 business_product 파일에 기록됩니다. 당일의 로그는 business_order, business_product 파일에, 하루가 지나면 전날의 로그는 롤링되어 business_order.2025-08-10 양식으로 로그 파일이 분리됩니다.
+
+      <img width="368" height="105" alt="Image" src="https://github.com/user-attachments/assets/5a766572-0c29-432b-9c32-5145d2e55206" />
+    - business_order 로그 파일 예시
+
+      <img width="856" height="128" alt="Image" src="https://github.com/user-attachments/assets/4e9ef5de-1e64-4617-8aa0-1c6ac9288898" />
+
+    - business_product 로그 파일 예시
+
+      <img width="794" height="40" alt="Image" src="https://github.com/user-attachments/assets/4ab2a978-d709-4326-a825-9cd50c1f9907" />
+
+- `Validation`
+    - 회원가입, 상품 등록 시 입력 데이터의 유효성을 검증합니다.
+
+      ```
+          @NotBlank(message = "이메일은 필수입니다.")
+          @Email(message = "올바른 이메일 형식이 아닙니다.")
+          @Schema(description = "이메일", example = "hanaro@email.com")
+          private String email;
+
+          @NotBlank(message = "비밀번호는 필수입니다.")
+          @Size(min = 8, max = 20, message = "비밀번호는 8자 이상 20자 이하여야 합니다.")
+          @Schema(description = "비밀번호", example = "12345678")
+          private String password;
+
+          @NotBlank(message = "닉네임은 필수입니다.")
+          @Size(min = 2, max = 10, message = "닉네임은 2자 이상 10자 이하여야 합니다.")
+          @Pattern(regexp = "^[가-힣a-zA-Z0-9]+$", message = "닉네임은 한글, 영문, 숫자만 사용할 수 있습니다.")
+          @Schema(description = "이름", example = "별돌이")
+          private String name;
+      ```
+    - DTO 레벨에서 @Valid 어노테이션을 통해 요청 본문이 DTO로 바인딩될 때 각 필드에 선언된 검증 어노테이션이 자동으로 실행됩니다. 서비스 로직 중 옳지 못한 요청일 경우 CustomException을 발생시켜 예외 처리를 진행합니다. 또한, 모든 예외는 GlobalExceptionHandler에서 상태 코드와 메시지를 통일된 형식으로 응답합니다.
+
+- `Actuator 엔드 포인트`
+    - 시스템 health, bean, env, metric 정보를 확인하기 위한 actuator 엔드 포인트를 Swagger 문서에서 확인할 수 있습니다.
+
+      <img width="1154" height="616" alt="Image" src="https://github.com/user-attachments/assets/fda69919-05ca-4744-9c40-b1498cc14ba6" />
+
+
+### ✍🏻 ERD
+<img width="757" height="747" alt="Image" src="https://github.com/user-attachments/assets/fdca8db8-c7c8-48e7-aedf-708d793264b1" />
