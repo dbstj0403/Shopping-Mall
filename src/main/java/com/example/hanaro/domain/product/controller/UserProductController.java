@@ -23,7 +23,7 @@ public class UserProductController {
 
     private final UserProductService userProductService;
 
-    @Operation(summary = "유저용 전체 상품 조회", description = "재고가 1개 이상인 상품의 이름, 가격을 반환합니다.")
+    @Operation(summary = "유저용 전체 상품 조회", description = "재고가 1개 이상인 상품의 아이디, 이름, 가격을 반환합니다.")
     @ProductListApiResponses
     @GetMapping("")
     public ResponseEntity<ApiResponseDto<List<ProductListItemDto>>> getAllAvailableProducts() {

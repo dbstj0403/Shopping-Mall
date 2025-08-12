@@ -40,16 +40,16 @@ chore: 코드 수정, 내부 파일 수정
 
 ### 🚀 기능 명세
 - `인증 / 인가`
-    - Spring Security, jwt 토큰을 이용한 회원가입 및 로그인 기능 제공
+    - Spring Security, jwt 토큰을 이용한 회원가입 및 로그인 기능을 제공합니다. 토큰 검증을 통해 권한이 확인되지 않을 경우 401, 403 에러를 띄웁니다.
 
       <img width="1123" height="432" alt="Image" src="https://github.com/user-attachments/assets/e4a208bb-b590-4d61-80b2-30430171a502" />
 
 - `파일 업로드`
-    - 관리자가 상품 등록 시 사진을 함께 등록할 경우 /resources/static/upload 파일에 날짜별 폴더링과 함께 업로드됩니다. 	상품 이미지를 등록하지 않을 경우 DB에는 이미지 경로가 null로 저장되고, 조회할 때 null인 값은 origin 폴더의 기본 이미지 경로로 매핑되어 반환됩니다.
+    - 관리자가 상품 등록 시 사진을 함께 등록할 경우 /resources/static/upload 파일에 날짜별 폴더링과 함께 업로드됩니다. 상품 수정 시 아무 이미지도 보내지 않을 경우 기존 이미지 경로가 유지되고, 새로운 이미지를 첨부할 경우 해당 이미지들로 모두 수정됩니다.
 
       <img width="504" height="325" alt="Image" src="https://github.com/user-attachments/assets/32dacd49-0665-401e-88db-d0bdb3444ec9" />
 
-      <img width="1200" height="209" alt="Image" src="https://github.com/user-attachments/assets/7e1eb826-c6ab-47fb-aec3-45cd87fee90b" />
+      <img width="868" height="313" alt="Image" src="https://github.com/user-attachments/assets/cc5ac536-1be7-45aa-a824-a37ec18bfd94" />
 
 - `스케쥴링`
     - 결제 완료, 배송 준비, 배송 중, 배송 완료 상태를 enum으로 관리하고, 생성된 주문을 스케쥴러를 통해 각각의 상태를 순차적으로 5분, 15분, 1시간 간격으로 변환합니다.
@@ -62,7 +62,7 @@ chore: 코드 수정, 내부 파일 수정
       }
       ```
 
-      <img width="886" height="211" alt="Image" src="https://github.com/user-attachments/assets/55842ff0-9bf9-453f-9b09-2b561877bff3" />
+      <img width="904" height="152" alt="Image" src="https://github.com/user-attachments/assets/753ea84a-c4b4-4998-891e-9bf83a9f7dc6" />
 
 - `배치 Job`
     - 매일 자정에 일별 매출 통계를 저장합니다. 8/11 자정에 매출 집계 코드가 작동되면 8/10 주문들의 매출 통계를 작성해 daily_sales_summary 테이블에 저장합니다. Column들은 날짜, 총 매출, 총 주문 수, 집계 날짜로 이루어져 있습니다. (사진은 테스트용으로 임의의 시간에 매출을 집계)
@@ -118,4 +118,4 @@ chore: 코드 수정, 내부 파일 수정
 
 
 ### ✍🏻 ERD
-<img width="858" height="686" alt="Image" src="https://github.com/user-attachments/assets/042313ee-adef-4e04-8e28-c550717da4b0" />
+<img width="757" height="747" alt="Image" src="https://github.com/user-attachments/assets/fdca8db8-c7c8-48e7-aedf-708d793264b1" />
