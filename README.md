@@ -80,7 +80,7 @@ chore: 코드 수정, 내부 파일 수정
       <img width="904" height="152" alt="Image" src="https://github.com/user-attachments/assets/753ea84a-c4b4-4998-891e-9bf83a9f7dc6" />
 
 - `배치 Job`
-    - 매일 자정에 일별 매출 통계를 저장합니다. 8/11 자정에 매출 집계 코드가 작동되면 8/10 주문들의 매출 통계를 작성해 daily_sales_summary 테이블에 저장합니다. Column들은 날짜, 총 매출, 총 주문 수, 집계 날짜로 이루어져 있습니다. (사진은 테스트용으로 임의의 시간에 매출을 집계)
+    - 매일 자정에 일별 매출 통계를 집계하며, 전날 주문들의 매출 통계를 작성해 daily_sales_summary 테이블에 저장합니다. Column들은 날짜, 총 매출, 총 주문 수, 집계 날짜로 이루어져 있습니다. (사진은 테스트용으로 임의의 시간에 매출을 집계)
 
       <img width="995" height="45" alt="Image" src="https://github.com/user-attachments/assets/ada337d7-1c97-40a1-b1db-620d717e6831" />
 
