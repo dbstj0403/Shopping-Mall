@@ -23,7 +23,7 @@ public class UserProductController {
 
     private final UserProductService userProductService;
 
-    @Operation(summary = "유저용 전체 상품 조회", description = "재고가 1개 이상인 상품의 아이디, 이름, 가격을 반환합니다.")
+    @Operation(summary = "유저용 전체 상품 조회", description = "재고가 1개 이상인 상품의 아이디, 이름, 가격, 이미지 경로를 반환합니다.")
     @ProductListApiResponses
     @GetMapping("")
     public ResponseEntity<ApiResponseDto<List<ProductListItemDto>>> getAllAvailableProducts() {
@@ -31,7 +31,7 @@ public class UserProductController {
         return ResponseEntity.ok(ApiResponseDto.ok("상품 목록 조회 성공", products));
     }
 
-    @Operation(summary = "유저용 상품 검색", description = "상품명을 포함하는 재고 1개 이상 상품의 이름, 가격을 반환합니다.")
+    @Operation(summary = "유저용 상품 검색", description = "상품명을 포함하는 재고 1개 이상 상품의 이름, 가격, 이미지 경로를 반환합니다.")
     @ProductListApiResponses
     @GetMapping("/search")
     public ResponseEntity<ApiResponseDto<List<ProductListItemDto>>> searchProducts(
@@ -43,7 +43,7 @@ public class UserProductController {
         );
     }
 
-    @Operation(summary = "유저용 상품 상세 조회", description = "아이디로 상품 상세(이름, 가격, 설명)를 조회합니다.")
+    @Operation(summary = "유저용 상품 상세 조회", description = "아이디로 상품 상세(이름, 가격, 설명, 이미지 경로)를 조회합니다.")
     @ProductDetailApiResponses
     @GetMapping("/{id}")
     public ResponseEntity<ApiResponseDto<ProductDetailDto>> getProductDetail(@PathVariable Long id) {

@@ -33,7 +33,8 @@ public class UserProductService {
     }
 
     public Optional<ProductDetailDto> getProductDetail(Long id) {
-        return productRepository.findById(id)
+        return productRepository.findWithImagesById(id)   // <= 여기만 변경
                 .map(ProductDetailDto::fromEntity);
     }
+
 }
